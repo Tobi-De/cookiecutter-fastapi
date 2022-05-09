@@ -1,25 +1,23 @@
 from __future__ import annotations
 
-from fastapi_users import models
-from tortoise.contrib.pydantic import PydanticModel
+from uuid import UUID
 
-from .models import User
+from fastapi_users import schemas
+from pydantic import BaseModel
 
 
-class UserRead(models.BaseUser):
+class BaseUser(BaseModel):
     short_name: str | None = None
     full_name: str | None = None
 
 
-class UserCreate(UserRead, models.BaseUserCreate):
+class UserRead(BaseUser, schemas.BaseUser[UUID]):
     pass
 
 
-class UserUpdate(UserRead, models.BaseUserUpdate):
+class UserCreate(BaseUser, schemas.BaseUserCreate):
     pass
 
 
-class UserInDB(UserRead, models.BaseUserDB, PydanticModel):
-    class Config:
-        orm_mode = True
-        orig_model = User
+class UserUpdate(BaseUser, schemas.BaseUserUpdate):
+    pass

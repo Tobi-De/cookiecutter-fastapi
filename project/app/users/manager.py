@@ -1,18 +1,31 @@
-from fastapi import Depends
-from fastapi_users import BaseUserManager, InvalidPasswordException
-from fastapi_users.db import TortoiseUserDatabase
+from __future__ import annotations
+
+from uuid import UUID
+
+from fastapi import Depends, Request
+from fastapi_users import BaseUserManager, InvalidPasswordException, UUIDIDMixin
+from fastapi_users_tortoise import TortoiseUserDatabase
 
 from app.core.config import settings
-from .models import User
-from .schemas import UserCreate, UserInDB
+from app.core.mail import mail, MessageSchema
+from .models import get_user_db, User
 
 
-class UserManager(BaseUserManager[UserCreate, UserInDB]):
-    user_db_model = UserInDB
+class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
     reset_password_token_secret = settings.SECRET_KEY
     verification_token_secret = settings.SECRET_KEY
 
-    async def validate_password(self, password: str, user: UserInDB) -> None:
+    async def on_after_register(
+            self, user: User, request: Request | None = None
+    ) -> None:
+        await mail.send_message(
+            MessageSchema(
+                recipients=[user.email],
+                body=f"Welcome to {user.email} on {settings.APP_NAME}",
+            )
+        )
+
+    async def validate_password(self, password: str, user: User) -> None:
         conditions = {
             "Password should be at least 8 characters": len(password) < 8,
             "Password should not contain e-mail": user.email in password,
@@ -22,10 +35,6 @@ class UserManager(BaseUserManager[UserCreate, UserInDB]):
         for msg, condition in conditions.items():
             if condition:
                 raise InvalidPasswordException(msg)
-
-
-async def get_user_db():
-    yield TortoiseUserDatabase(UserInDB, User)
 
 
 async def get_user_manager(user_db: TortoiseUserDatabase = Depends(get_user_db)):

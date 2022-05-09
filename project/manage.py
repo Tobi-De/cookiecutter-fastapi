@@ -1,27 +1,26 @@
 from __future__ import annotations
 
-from asyncio import run as aiorun
+import asyncio
+import subprocess
 
 import typer
 import uvicorn
-from fastapi_users.manager import InvalidPasswordException, UserAlreadyExists
+from aiosmtpd.controller import Controller
+from aiosmtpd.handlers import Debugging
+from fastapi_users.exceptions import UserAlreadyExists, InvalidPasswordException
 from pydantic import EmailStr
 from tortoise import Tortoise
 from traitlets.config import Config
 
 from app.core.config import settings
-from app.db.config import TORTOISE_ORM
-from app.users import models as user_models, schemas as user_schemas
+from app.db.config import TORTOISE_ORM, MODELS_MODULES
+from app.users.schemas import UserCreate
 from app.users.utils import create_user
 
 cli = typer.Typer()
 
 
-# todo reset_db ?
-#   startapp
-
-
-@cli.command()
+@cli.command(help="Run the uvicorn server")
 def runserver(
         port: int = 8000,
         host: str = "localhost",
@@ -38,7 +37,7 @@ def runserver(
     )
 
 
-@cli.command()
+@cli.command(help="Create a new user")
 def create_user():
     """Create user"""
     email = typer.prompt("email", type=EmailStr)
@@ -50,7 +49,7 @@ def create_user():
     async def _create_user():
         await Tortoise.init(config=TORTOISE_ORM)
         await create_user(
-            user_schemas.UserCreate(
+            UserCreate(
                 email=email,
                 password=password,
                 full_name=full_name,
@@ -60,27 +59,19 @@ def create_user():
         )
 
     try:
-        aiorun(_create_user())
+        asyncio.run(_create_user())
     except UserAlreadyExists:
-        typer.echo(f"user with {email} already exists")
+        typer.secho(f"user with {email} already exists", fg=typer.colors.BLUE)
     except InvalidPasswordException:
-        typer.echo(f"Invalid password")
+        typer.secho(f"Invalid password", fg=typer.colors.RED)
     else:
-        typer.echo(f"user {email} created")
+        typer.secho(f"user {email} created", fg=typer.colors.GREEN)
 
 
-@cli.command()
+@cli.command(help="An Ipython shell with your database models automatically imported.")
 def shell():
     """Opens an interactive shell with objects auto imported"""
-
-    _vars = {
-        "db": db,
-        "settings": settings,
-        "cli": cli,
-        "user_models": user_models,
-        "user_schemas": user_schemas,
-    }
-    typer.echo(f"Auto imports: {list(_vars.keys())}")
+    models_import = [f"from {module} import *" for module in MODELS_MODULES]
     try:
         from IPython import start_ipython
 
@@ -90,16 +81,45 @@ def shell():
             "from tortoise import Tortoise",
             "from app.db.config import TORTOISE_ORM",
             "await Tortoise.init(config=TORTOISE_ORM)",
+            *models_import,
         ]
-        start_ipython(argv=[], user_ns=_vars, config=c)
+        start_ipython(argv=[], config=c)
     except ImportError:
-        typer.echo("Install iPython using `poetry add ipython` to use this feature.")
+        typer.secho(
+            "Install iPython using `poetry add ipython` to use this feature.",
+            fg=typer.colors.RED,
+        )
 
 
-@cli.command()
+@cli.command(help="Run the procrastinate worker.")
 def worker():
-    import subprocess
-    subprocess.run(["arq", "app.worker.WorkerSettings", "--watch", settings.BASE_DIR.resolve(strict=True)])
+    subprocess.run(["procrastinate", "--verbose", "--app=app.procrastinate.app", "worker"])
+
+
+@cli.command(help="Create a new app component")
+def startapp(app_name: str):
+    package_name = app_name.lower().strip().replace(" ", "_").replace("-", "_")
+    app_dir = settings.BASE_DIR / package_name
+    files = {
+        "__init__.py": "",
+        "models.py": "from app.db.models import TimeStampedModel",
+        "schemas.py": "from pydantic import BaseModel",
+        "api.py": f"from fastapi import APIRouter\n\nrouter = APIRouter(prefix='/{package_name}')",
+    }
+    app_dir.mkdir()
+    for file, content in files.items():
+        with open(app_dir / file, "w") as f:
+            f.write(content)
+    typer.secho(f"App {package_name} created", fg=typer.colors.GREEN)
+
+
+@cli.command(help="Starts a test mail server for development.")
+def mailserver(hostname: str = settings.SMTP_HOST, port: int = settings.SMTP_PORT):
+    typer.secho(f"Now accepting mail at {hostname}:{port}", fg=typer.colors.GREEN)
+    controller = Controller(Debugging(), hostname=hostname, port=port)
+    controller.start()
+    while True:
+        pass
 
 
 if __name__ == "__main__":

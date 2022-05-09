@@ -1,18 +1,28 @@
 # Fastapi Cookiecutter
 
+Cookiecutter for fastapi projects.
+
 - [x] Basic working fastapi project
 - [x] fastapi users
 - [x] tortoise orm and aerich
-- [x] arq setup
-- [ ] command line tool
-- [ ] some utils to add / auth middleware, emails, pagination
+- [ ] procrastinate setup
+- [ ] pre-commit setup
+- [ ] Html rendering with Jinja2
+- [x] command line tool
+- [x] fastapi-mail
+- [x] fastapi-pagination
 - [ ] update cookiecutter file
-- [ ] publish
-- [ ] basic jwt setup
-- [ ] procrastinate
-- [ ] write both readme files
-- [ ] possible aws ses to integrate, and media for file storage
-- [ ] graphql
-- [ ] redis om
-- [ ] sqlalchemy
-- [ ] mongodb
+- [ ] update readme files
+
+## Task queues managers
+
+ - [ ] procrastinate
+ - [ ] arq
+ - [ ] celery
+
+## Databases
+
+- [ ] Tortoise ORM
+- [ ] RedisOM
+- [ ] Beanie
+- [ ] SQLModel

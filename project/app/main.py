@@ -1,24 +1,23 @@
 import sentry_sdk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
+from .core.auth import get_auth_router
 from .core.config import settings
 from .db.config import register_db
 from .lifetime import startup
 from .users.api import router as users_router
-from .views.router import router as views_router
 
 
 def _get_application():
     _app = FastAPI(title=settings.APP_NAME, description=settings.APP_DESCRIPTION)
 
-    # Routes
+    # Auth routes
+    _app.include_router(get_auth_router())
     _app.include_router(users_router)
-    _app.include_router(views_router, include_in_schema=False)
 
     # Middlewares
     _app.add_middleware(
@@ -40,13 +39,6 @@ def _get_application():
 
     # App lifetime
     _app.on_event("startup")(startup)
-
-    # StaticFiles
-    _app.mount(
-        "/static",
-        StaticFiles(directory=str(settings.BASE_DIR / "static")),
-        name="static",
-    )
 
     return _app
 

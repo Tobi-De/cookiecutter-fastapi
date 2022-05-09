@@ -1,4 +1,4 @@
-from fastapi_users.manager import UserAlreadyExists
+from fastapi_users.exceptions import UserAlreadyExists
 
 from .core.config import settings
 from .logger import logger
