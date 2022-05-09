@@ -105,8 +105,11 @@ def startapp(app_name: str):
         "models.py": "from app.db.models import TimeStampedModel",
         "schemas.py": "from pydantic import BaseModel",
         "api.py": f"from fastapi import APIRouter\n\nrouter = APIRouter(prefix='/{package_name}')",
+        "tests/__init__.py": "",
+        "tests/factories.py": "from factory import Factory, Faker"
     }
     app_dir.mkdir()
+    (app_dir / "tests").mkdir()
     for file, content in files.items():
         with open(app_dir / file, "w") as f:
             f.write(content)
