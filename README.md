@@ -32,7 +32,7 @@ A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https
  - [ ] [Procrastinate](https://github.com/procrastinate-org/procrastinate)
  - [ ] [Celery](https://github.com/celery/celery)
 
-### Database options
+### ORM/ODM options
 
 - [x] [Tortoise ORM](https://tortoise.github.io/)
 - [ ] [RedisOM](https://github.com/redis/redis-om-python)
