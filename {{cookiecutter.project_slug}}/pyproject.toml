@@ -6,7 +6,7 @@ authors = ["{{cookiecutter.author}}"]
 license = "{{cookiecutter.license}}"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 fastapi = "^0.77.1"
 uvicorn = "^0.17.6"
 pydantic = {extras = ["email", "dotenv"], version = "^1.9.0"}

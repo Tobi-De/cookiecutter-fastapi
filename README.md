@@ -1,6 +1,6 @@
 # Fastapi Cookiecutter
 
-[Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django).
+A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django).
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Tobi-De/cookiecutter-fastapi/blob/master/LICENSE)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -28,7 +28,7 @@
 ### Task queues manager options
 
  - [x] [Arq](https://github.com/samuelcolvin/arq)
- - [ ] [Procrastinate]()
+ - [ ] [Procrastinate](https://github.com/procrastinate-org/procrastinate)
  - [ ] [Celery](https://github.com/celery/celery)
 
 ### Database options
@@ -43,10 +43,14 @@
 
 Install the cookiecutter package:
 
-    $ pip install cookiecutter
+```shell
+pip install cookiecutter
+```
 
 Now run it against this repo:
 
-    $ cookiecutter https://github.com/Tobi-De/cookiecutter-fastapi
+```shell
+cookiecutter https://github.com/Tobi-De/cookiecutter-fastapi
+```
 
 You'll be prompted for some values. Provide them, then a fastapi project will be created for you.

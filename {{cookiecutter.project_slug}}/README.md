@@ -22,7 +22,7 @@ Adding new migrations.
 aerich migrate --name <migration_name>
 ```
 
-Upgrading the database when new database are created.
+Upgrading the database when new migrations are created.
 
 ```shell
 aerich upgrade
@@ -33,3 +33,13 @@ aerich upgrade
 ```shell
 python manage.py runserver
 ```
+
+## Cli
+
+There is a manage.py file at the root of the project, it contains a basic cli to hopefully
+help you manage your project more easily. To get all available commands type this:
+
+```shell
+python manage.py --help
+```
+

@@ -1,12 +1,30 @@
 [tool.poetry]
 name = "cookiecutter-fastapi"
 version = "0.1.0"
-description = ""
+description = "Cookiecutter for fastapi projects"
+readme = "README.md"
 authors = ["Tobi-De <tobidegnon@protonmail.com>"]
 license = "MIT"
+repository = "https://github.com/Tobi-De/cookiecutter-fastapi"
+homepage = "https://github.com/Tobi-De/cookiecutter-fastapi"
+keywords = ["fastapi", "python", "cookiecutter", "project template", "tortoise-orm", "beanie", "SQLModel"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: Django :: 3.2",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development",
+]
+
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 cookiecutter = "^1.7.3"
 
 [tool.poetry.dev-dependencies]

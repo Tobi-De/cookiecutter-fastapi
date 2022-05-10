@@ -92,6 +92,7 @@ def shell():
 
 @cli.command(help="Run the arq worker.")
 def worker():
+    """Run the worker process"""
     import subprocess
 
     subprocess.run(
@@ -106,6 +107,7 @@ def worker():
 
 @cli.command(help="Create a new app component.")
 def startapp(app_name: str):
+    """Create a new fastapi component similarly to django startapp"""
     package_name = app_name.lower().strip().replace(" ", "_").replace("-", "_")
     app_dir = settings.BASE_DIR / package_name
     files = {
@@ -126,6 +128,7 @@ def startapp(app_name: str):
 
 @cli.command(help="Starts a test mail server for development.")
 def mailserver(hostname: str = "localhost", port: int = 8025):
+    """Run a simple smtp server, if you use tools like mailhog, you can delete this"""
     typer.secho(f"Now accepting mail at {hostname}:{port}", fg=typer.colors.GREEN)
     controller = Controller(Debugging(), hostname=hostname, port=port)
     controller.start()
