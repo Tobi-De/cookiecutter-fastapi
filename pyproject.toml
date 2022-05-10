@@ -21,6 +21,9 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Software Development",
 ]
+packages=[
+    { include = "tests" },
+]
 
 
 [tool.poetry.dependencies]

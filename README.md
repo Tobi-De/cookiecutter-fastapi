@@ -2,6 +2,7 @@
 
 A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django).
 
+[![python](https://img.shields.io/pypi/pyversions/cookiecutter-fastapi)](https://github.com/Tobi-De/cookiecutter-fastapi)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Tobi-De/cookiecutter-fastapi/blob/master/LICENSE)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
