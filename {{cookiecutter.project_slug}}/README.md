@@ -28,15 +28,8 @@ Upgrading the database when new database are created.
 aerich upgrade
 ```
 
-
 ## Run the fastapi app
 
 ```shell
-uvicorn app.main:app
-```
-
-## Run arq
-
-```shell
- arq app.worker.WorkerSettings
+python manage.py runserver
 ```

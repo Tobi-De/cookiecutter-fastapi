@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from pydantic import (
     AnyHttpUrl,
@@ -13,18 +14,12 @@ from pydantic import (
 )
 
 
-# APPS
-
-
 class Settings(BaseSettings):
-    # project/app
+    # {{cookiecutter.project_slug}}/app
     BASE_DIR: Path = Path(__file__).parent.parent
-
-    APP_NAME: str
-    APP_DESCRIPTION: str
-    SECRET_KEY: str
-    DEBUG: bool = False
     LOGIN_PATH = "/auth/login"
+
+    SECRET_KEY: str
     AUTH_TOKEN_LIFETIME_SECONDS = 3600
     SERVER_HOST: AnyHttpUrl
     SENTRY_DSN: HttpUrl | None = None
@@ -44,14 +39,22 @@ class Settings(BaseSettings):
     DATABASE_URI: PostgresDsn
 
     SMTP_TLS: bool = True
-    SMTP_PORT: int = 8025
-    SMTP_HOST: str = "localhost"
-    SMTP_USER: str = ""
-    SMTP_PASSWORD: str = ""
+    SMTP_PORT: int | None = None
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    DEFAULT_FROM_EMAIL: EmailStr | None = None
+    EMAILS_ENABLED: bool = False
 
-    DEFAULT_FROM_EMAIL: EmailStr
+    @validator("EMAILS_ENABLED", pre=True)
+    def get_emails_enabled(cls, _: bool, values: dict[str, Any]) -> bool:
+        return bool(
+            values.get("SMTP_HOST")
+            and values.get("SMTP_PORT")
+            and values.get("DEFAULT_FROM_EMAIL")
+        )
 
-    FIRST_SUPERUSER: EmailStr
+    FIRST_SUPERUSER_EMAIL: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
 
     class Config:

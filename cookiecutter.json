@@ -1,0 +1,12 @@
+{
+  "project_name": "My fastapi app",
+  "project_slug":  "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "project_description": "",
+  "author": "Tobi-De <tobidegnon@protonmail.com>",
+  "license":  [
+    "MIT",
+    "BSD",
+    "Apache-2.0",
+    "Proprietary"
+  ]
+}

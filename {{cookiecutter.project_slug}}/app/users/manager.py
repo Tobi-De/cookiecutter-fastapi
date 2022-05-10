@@ -7,8 +7,9 @@ from fastapi_users import BaseUserManager, InvalidPasswordException, UUIDIDMixin
 from fastapi_users_tortoise import TortoiseUserDatabase
 
 from app.core.config import settings
-from app.core.mail import mail, MessageSchema
-from .models import get_user_db, User
+from app.utils import send_email
+
+from .models import User, get_user_db
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
@@ -16,13 +17,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
     verification_token_secret = settings.SECRET_KEY
 
     async def on_after_register(
-            self, user: User, request: Request | None = None
+        self, user: User, request: Request | None = None
     ) -> None:
-        await mail.send_message(
-            MessageSchema(
-                recipients=[user.email],
-                body=f"Welcome to {user.email} on {settings.APP_NAME}",
-            )
+        await send_email(
+            email_to=user.email, subject="Welcome!", body=f"Welcome to {user}"
         )
 
     async def validate_password(self, password: str, user: User) -> None:

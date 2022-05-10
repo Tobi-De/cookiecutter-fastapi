@@ -11,7 +11,8 @@ from fastapi_users.authentication import (
 
 from app.users.manager import get_user_manager
 from app.users.models import User
-from app.users.schemas import UserRead, UserCreate
+from app.users.schemas import UserCreate, UserRead
+
 from .config import settings
 
 bearer_transport = BearerTransport(tokenUrl=settings.LOGIN_PATH)

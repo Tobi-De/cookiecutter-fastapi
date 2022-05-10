@@ -1,31 +1,30 @@
 from __future__ import annotations
 
 import asyncio
-import subprocess
 
 import typer
 import uvicorn
 from aiosmtpd.controller import Controller
 from aiosmtpd.handlers import Debugging
-from fastapi_users.exceptions import UserAlreadyExists, InvalidPasswordException
+from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
 from pydantic import EmailStr
 from tortoise import Tortoise
 from traitlets.config import Config
 
 from app.core.config import settings
-from app.db.config import TORTOISE_ORM, MODELS_MODULES
+from app.db.config import MODELS_MODULES, TORTOISE_ORM
+from app.users import utils
 from app.users.schemas import UserCreate
-from app.users.utils import create_user
 
 cli = typer.Typer()
 
 
-@cli.command(help="Run the uvicorn server")
+@cli.command(help="Run the uvicorn server.")
 def runserver(
-        port: int = 8000,
-        host: str = "localhost",
-        log_level: str = "debug",
-        reload: bool = True,
+    port: int = 8000,
+    host: str = "localhost",
+    log_level: str = "debug",
+    reload: bool = True,
 ):
     """Run the API server."""
     uvicorn.run(
@@ -37,7 +36,7 @@ def runserver(
     )
 
 
-@cli.command(help="Create a new user")
+@cli.command(help="Create a new user.")
 def create_user():
     """Create user"""
     email = typer.prompt("email", type=EmailStr)
@@ -48,7 +47,7 @@ def create_user():
 
     async def _create_user():
         await Tortoise.init(config=TORTOISE_ORM)
-        await create_user(
+        await utils.create_user(
             UserCreate(
                 email=email,
                 password=password,
@@ -63,7 +62,7 @@ def create_user():
     except UserAlreadyExists:
         typer.secho(f"user with {email} already exists", fg=typer.colors.BLUE)
     except InvalidPasswordException:
-        typer.secho(f"Invalid password", fg=typer.colors.RED)
+        typer.secho("Invalid password", fg=typer.colors.RED)
     else:
         typer.secho(f"user {email} created", fg=typer.colors.GREEN)
 
@@ -91,12 +90,21 @@ def shell():
         )
 
 
-@cli.command(help="Run the procrastinate worker.")
+@cli.command(help="Run the arq worker.")
 def worker():
-    subprocess.run(["procrastinate", "--verbose", "--app=app.procrastinate.app", "worker"])
+    import subprocess
+
+    subprocess.run(
+        [
+            "arq",
+            "app.worker.WorkerSettings",
+            "--watch",
+            settings.BASE_DIR.resolve(strict=True),
+        ]
+    )
 
 
-@cli.command(help="Create a new app component")
+@cli.command(help="Create a new app component.")
 def startapp(app_name: str):
     package_name = app_name.lower().strip().replace(" ", "_").replace("-", "_")
     app_dir = settings.BASE_DIR / package_name
@@ -104,9 +112,9 @@ def startapp(app_name: str):
         "__init__.py": "",
         "models.py": "from app.db.models import TimeStampedModel",
         "schemas.py": "from pydantic import BaseModel",
-        "api.py": f"from fastapi import APIRouter\n\nrouter = APIRouter(prefix='/{package_name}')",
+        "routes.py": f"from fastapi import APIRouter\n\nrouter = APIRouter(prefix='/{package_name}')",
         "tests/__init__.py": "",
-        "tests/factories.py": "from factory import Factory, Faker"
+        "tests/factories.py": "from factory import Factory, Faker",
     }
     app_dir.mkdir()
     (app_dir / "tests").mkdir()
@@ -117,7 +125,7 @@ def startapp(app_name: str):
 
 
 @cli.command(help="Starts a test mail server for development.")
-def mailserver(hostname: str = settings.SMTP_HOST, port: int = settings.SMTP_PORT):
+def mailserver(hostname: str = "localhost", port: int = 8025):
     typer.secho(f"Now accepting mail at {hostname}:{port}", fg=typer.colors.GREEN)
     controller = Controller(Debugging(), hostname=hostname, port=port)
     controller.start()

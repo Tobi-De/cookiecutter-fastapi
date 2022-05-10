@@ -9,11 +9,14 @@ from .core.auth import get_auth_router
 from .core.config import settings
 from .db.config import register_db
 from .lifetime import startup
-from .users.api import router as users_router
+from .users.routes import router as users_router
 
 
 def _get_application():
-    _app = FastAPI(title=settings.APP_NAME, description=settings.APP_DESCRIPTION)
+    _app = FastAPI(
+        title="{{cookiecutter.project_name}}",
+        description="{{cookiecutter.project_description}}",
+    )
 
     # Auth routes
     _app.include_router(get_auth_router())
