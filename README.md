@@ -18,7 +18,7 @@ A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https
 - [x] Run tests with unittest or [pytest](https://docs.pytest.org/en/7.1.x/)
 - [x] Sending emails using [aiosmtplib](https://aiosmtplib.readthedocs.io/en/stable/client.html)
 - [x] Optional integration with [sentry](https://docs.sentry.io/platforms/python/) for error logging
-- [ ] [Docker](https://www.docker.com/) and [docker-compose](https://github.com/docker/compose) for and production using [Traefik](https://github.com/traefik/traefik)
+- [ ] [Docker](https://www.docker.com/) and [docker-compose](https://github.com/docker/compose) for production using [Traefik](https://github.com/traefik/traefik)
 - [ ] Optional setup of HTML templates rendering using [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
 - [ ] Optional static files serving using [whitenoise](http://whitenoise.evans.io/en/stable/)
 - [ ] [Procfile](https://devcenter.heroku.com/articles/procfile) for deploying to heroku
@@ -32,7 +32,7 @@ A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https
  - [ ] [Procrastinate](https://github.com/procrastinate-org/procrastinate)
  - [ ] [Celery](https://github.com/celery/celery)
 
-### Database options
+### ORM/ODM options
 
 - [x] [Tortoise ORM](https://tortoise.github.io/)
 - [ ] [RedisOM](https://github.com/redis/redis-om-python)
