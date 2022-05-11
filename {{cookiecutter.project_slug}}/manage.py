@@ -7,8 +7,7 @@ import uvicorn
 from aiosmtpd.controller import Controller
 from aiosmtpd.handlers import Debugging
 from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
-from pydantic import EmailStr
-from tortoise import Tortoise
+from tortoise import Tortoise, connections
 from traitlets.config import Config
 
 from app.core.config import settings
@@ -38,8 +37,8 @@ def runserver(
 
 @cli.command(help="Create a new user.")
 def create_user():
-    """Create user"""
-    email = typer.prompt("email", type=EmailStr)
+    """Create a new user"""
+    email = typer.prompt("email", type=str)
     password = typer.prompt("password", type=str, hide_input=True)
     full_name = typer.prompt("full name", type=str, default="")
     short_name = typer.prompt("short name", type=str, default="")
@@ -56,6 +55,7 @@ def create_user():
                 superuser=superuser,
             )
         )
+        await connections.close_all()
 
     try:
         asyncio.run(_create_user())

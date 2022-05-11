@@ -30,13 +30,13 @@ def _get_application():
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
+    {% if cookiecutter.use_sentry == 'y' -%}
     if settings.SENTRY_DSN:
         sentry_sdk.init(
             settings.SENTRY_DSN, integrations=[LoggingIntegration(), RedisIntegration()]
         )
         app.add_middleware(SentryAsgiMiddleware)
-
+    {% endif %}
     # Register tortoise
     register_db(_app)
 

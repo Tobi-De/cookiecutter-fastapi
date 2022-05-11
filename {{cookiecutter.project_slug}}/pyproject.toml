@@ -18,7 +18,9 @@ aerich = "^0.6.3"
 arq = "^0.22"
 aiosmtplib = "^1.1.6"
 python-multipart = "^0.0.5"
+{% if cookiecutter.use_sentry == 'y' -%}
 sentry-sdk = "^1.5.11"
+{% endif -%}
 rich = "^12.4.1"
 typer = "^0.4.1"
 watchgod = "^0.8.2"

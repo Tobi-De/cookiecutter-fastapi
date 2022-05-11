@@ -8,5 +8,6 @@
     "BSD",
     "Apache-2.0",
     "Proprietary"
-  ]
+  ],
+   "use_sentry": "y"
 }

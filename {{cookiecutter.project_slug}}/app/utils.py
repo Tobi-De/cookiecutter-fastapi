@@ -13,6 +13,7 @@ async def enqueue_job(func: str, *args, **kwargs) -> None:
     await redis.enqueue_job(func, *args, **kwargs)
 
 
+# TODO this should probably be made a background task, it really slows api responses.
 async def send_email(email_to: str, subject: str = "", body: str = "") -> None:
     assert settings.EMAILS_ENABLED, "no provided configuration for email variables"
     message = EmailMessage()

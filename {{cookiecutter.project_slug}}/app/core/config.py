@@ -22,8 +22,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     AUTH_TOKEN_LIFETIME_SECONDS = 3600
     SERVER_HOST: AnyHttpUrl
+    {% if cookiecutter.use_sentry == 'y' -%}
     SENTRY_DSN: HttpUrl | None = None
-
+    {% endif %}
     REDIS_URL: RedisDsn
 
     BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
