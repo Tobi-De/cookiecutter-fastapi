@@ -4,13 +4,7 @@
 
 ## Database setup
 
-Aerich initialization, should be done only once.
-
-```shell
-aerich init -t app.db.init_db.TORTOISE_ORM
-```
-
-Create migrations
+Create your first migration
 
 ```shell
 aerich init-db

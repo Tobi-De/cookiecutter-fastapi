@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 poetry.lock
+.DS_Store
