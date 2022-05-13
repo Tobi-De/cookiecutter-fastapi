@@ -23,7 +23,7 @@ A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https
 - [ ] Optional static files serving using [whitenoise](http://whitenoise.evans.io/en/stable/)
 - [ ] [Procfile](https://devcenter.heroku.com/articles/procfile) for deploying to heroku
 - [ ] Optional integration with [fastapi-storages](https://github.com/Tobi-De/fastapi-storages) for media files storage
-- [ ] Implement the [Health Check API pattern](https://microservices.io/patterns/observability/health-check-api.html) on your FastAPI application
+- [x] Implement the [Health Check API pattern](https://microservices.io/patterns/observability/health-check-api.html) on your FastAPI application
 - [ ] Renders fastapi projects with 100% starting test coverage
 
 ### Task queues manager options

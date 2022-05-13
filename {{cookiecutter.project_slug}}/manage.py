@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+from functools import partial
+from itertools import chain
 
 import typer
 import uvicorn
@@ -11,7 +13,7 @@ from tortoise import Tortoise, connections
 from traitlets.config import Config
 
 from app.core.config import settings
-from app.db.config import MODELS_MODULES, TORTOISE_ORM
+from app.db.config import TORTOISE_ORM
 from app.users import utils
 from app.users.schemas import UserCreate
 
@@ -70,24 +72,42 @@ def create_user():
 @cli.command(help="An Ipython shell with your database models automatically imported.")
 def shell():
     """Opens an interactive shell with objects auto imported"""
-    models_import = [f"from {module} import *" for module in MODELS_MODULES]
     try:
         from IPython import start_ipython
-
-        c = Config()
-        c.InteractiveShell.autoawait = True
-        c.InteractiveShellApp.exec_lines = [
-            "from tortoise import Tortoise",
-            "from app.db.config import TORTOISE_ORM",
-            "await Tortoise.init(config=TORTOISE_ORM)",
-            *models_import,
-        ]
-        start_ipython(argv=[], config=c)
     except ImportError:
         typer.secho(
             "Install iPython using `poetry add ipython` to use this feature.",
             fg=typer.colors.RED,
         )
+        raise typer.Exit()
+
+    def teardown_shell():
+        import asyncio
+        print("closing tortoise connections....")
+        asyncio.run(connections.close_all())
+
+    tortoise_init = partial(Tortoise.init, config=TORTOISE_ORM)
+    modules = list(
+        chain(*[app.get("models") for app in TORTOISE_ORM.get("apps").values()])
+    )
+    auto_imports = [
+        "from tortoise.expressions import Q, F, Subquery",
+        "from tortoise.query_utils import Prefetch",
+    ] + [f"from {module} import *" for module in modules]
+    shell_setup = [
+        "import atexit",
+        "_ = atexit.register(teardown_shell)",
+        "await tortoise_init()",
+    ]
+    typer.secho("Auto Imports\n" + "\n".join(auto_imports), fg=typer.colors.GREEN)
+    c = Config()
+    c.InteractiveShell.autoawait = True
+    c.InteractiveShellApp.exec_lines = auto_imports + shell_setup
+    start_ipython(
+        argv=[],
+        user_ns={"teardown_shell": teardown_shell, "tortoise_init": tortoise_init},
+        config=c,
+    )
 
 
 @cli.command(help="Run the arq worker.")

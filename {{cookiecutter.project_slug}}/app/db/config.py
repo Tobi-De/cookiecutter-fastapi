@@ -3,13 +3,12 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from app.core.config import settings
 
-MODELS_MODULES = ["app.users.models"]
 
 TORTOISE_ORM = {
     "connections": {"default": settings.DATABASE_URI},
     "apps": {
         "models": {
-            "models": MODELS_MODULES + ["aerich.models"],
+            "models": ["app.users.models", "aerich.models"],
             "default_connection": "default",
         },
     },

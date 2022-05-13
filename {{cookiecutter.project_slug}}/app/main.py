@@ -10,6 +10,7 @@ from .core.config import settings
 from .db.config import register_db
 from .lifetime import startup
 from .users.routes import router as users_router
+from .health import router as health_check_router
 
 
 def _get_application():
@@ -21,6 +22,7 @@ def _get_application():
     # Auth routes
     _app.include_router(get_auth_router())
     _app.include_router(users_router)
+    _app.include_router(health_check_router)
 
     # Middlewares
     _app.add_middleware(
