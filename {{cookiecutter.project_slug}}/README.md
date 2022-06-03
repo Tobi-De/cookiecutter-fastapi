@@ -37,3 +37,6 @@ help you manage your project more easily. To get all available commands type thi
 python manage.py --help
 ```
 
+## Credits
+
+This package was created with [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and the [cookiecutter-fastapi](https://github.com/tobi-de/cookiecutter-fastapi) project template.

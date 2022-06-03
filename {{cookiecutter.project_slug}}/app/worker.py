@@ -5,7 +5,10 @@ from tortoise import Tortoise
 from .core.config import settings
 from .db.config import TORTOISE_ORM
 
-ARQ_BACKGROUND_FUNCTIONS = ["app.users.tasks.log_user_email"]
+ARQ_BACKGROUND_FUNCTIONS = [
+    "app.users.tasks.log_user_email",
+    "app.services.email.send_email_task",
+]
 FUNCTIONS = [import_string(bg_func) for bg_func in ARQ_BACKGROUND_FUNCTIONS]
 
 

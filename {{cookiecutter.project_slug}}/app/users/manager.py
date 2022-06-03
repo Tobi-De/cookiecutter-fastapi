@@ -7,8 +7,8 @@ from fastapi_users import BaseUserManager, InvalidPasswordException, UUIDIDMixin
 from fastapi_users_tortoise import TortoiseUserDatabase
 
 from app.core.config import settings
-from app.utils import send_email
-
+from app.services.email import render_email_template
+from app.utils import enqueue_job
 from .models import User, get_user_db
 
 
@@ -19,8 +19,13 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
     async def on_after_register(
         self, user: User, request: Request | None = None
     ) -> None:
-        await send_email(
-            email_to=user.email, subject="Welcome!", body=f"Welcome to {user}"
+        name = user.full_name or user.short_name
+        subject = f"Welcome to {name}!" if name else "Welcome!"
+        await enqueue_job(
+            "send_email_task",
+            recipient=(user.email, None),
+            subject=subject,
+            html=render_email_template("welcome.html", context={"user": user}),
         )
 
     async def validate_password(self, password: str, user: User) -> None:

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Response, status
 from pydantic import BaseModel
 from tortoise.exceptions import DBConnectionError
 
-from .logger import logger
+from app.core.logger import logger
 from .users.models import User
 from .worker import WorkerSettings
 

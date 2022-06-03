@@ -1,13 +1,18 @@
 {
-  "project_name": "My fastapi app",
+  "project_name": "My fastapi project",
   "project_slug":  "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "project_description": "",
-  "author": "Tobi-De <tobidegnon@protonmail.com>",
+  "author": "Tobi-De <tobidegnon@proton.me>",
+  "copyright_year": "{% now 'utc', '%Y' %}",
   "license":  [
     "MIT",
-    "BSD",
+    "GPL-3.0",
     "Apache-2.0",
     "Proprietary"
   ],
-   "use_sentry": "y"
+   "use_sentry": "y",
+   "mail_service": [
+    "Amazon SES",
+    "Other SMTP"
+  ]
 }

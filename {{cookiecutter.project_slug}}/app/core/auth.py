@@ -12,10 +12,9 @@ from fastapi_users.authentication import (
 from app.users.manager import get_user_manager
 from app.users.models import User
 from app.users.schemas import UserCreate, UserRead
-
 from .config import settings
 
-bearer_transport = BearerTransport(tokenUrl=settings.LOGIN_PATH)
+bearer_transport = BearerTransport(tokenUrl=settings.PATHS.LOGIN_PATH)
 cookie_transport = CookieTransport(cookie_max_age=settings.AUTH_TOKEN_LIFETIME_SECONDS)
 
 
@@ -43,3 +42,7 @@ def get_auth_router() -> APIRouter:
     router.include_router(fastapi_users.get_reset_password_router())
     router.include_router(fastapi_users.get_verify_router(UserRead))
     return router
+
+
+current_user = fastapi_users.current_user(active=True)
+superuser = fastapi_users.current_user(active=True, superuser=True)

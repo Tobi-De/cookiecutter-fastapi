@@ -14,9 +14,9 @@ A [Cookiecutter]() for fastapi projects, inspired by [cookiecutter-django](https
 - [x] Include a cli tool built with [typer](https://github.com/tiangolo/typer) to simplify project management
 - [x] [Pre-commit](https://pre-commit.com/) integration included by default
 - [x] [Tortoise-orm](https://tortoise.github.io/) and [aerich](https://github.com/tortoise/aerich) database setup by default but switchable
-- [x] [Fastapi-pagination](https://github.com/uriyyo/fastapi-pagination) included by default
+- [x] Limit-offset pagination helpers included
 - [x] Run tests with unittest or [pytest](https://docs.pytest.org/en/7.1.x/)
-- [x] Sending emails using [aiosmtplib](https://aiosmtplib.readthedocs.io/en/stable/client.html)
+- [x] Sending emails using [aiosmtplib](https://aiosmtplib.readthedocs.io/en/stable/client.html) or [Amazon SES](https://aws.amazon.com/fr/ses/)
 - [x] Optional integration with [sentry](https://docs.sentry.io/platforms/python/) for error logging
 - [ ] [Docker](https://www.docker.com/) and [docker-compose](https://github.com/docker/compose) for production using [Traefik](https://github.com/traefik/traefik)
 - [ ] Optional setup of HTML templates rendering using [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
