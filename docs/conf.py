@@ -1,5 +1,5 @@
 """Sphinx configuration."""
-project = "Fastapi Paginator"
+project = "Cookiecutter Fastapi"
 author = "Tobi DEGNON"
 copyright = "2022, Tobi DEGNON"
 extensions = [
@@ -8,5 +8,6 @@ extensions = [
     "sphinx_click",
     "myst_parser",
 ]
+myst_enable_extensions = ["tasklist"]
 autodoc_typehints = "description"
 html_theme = "furo"
