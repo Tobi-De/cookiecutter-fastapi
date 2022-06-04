@@ -1,6 +1,6 @@
 # Contributor Guide
 
-Thank you for your interest in improving the Hypermodern Python Cookiecutter.
+Thank you for your interest in improving cookiecutter fastapi.
 This project is open-source under the [MIT license] and
 welcomes contributions in the form of bug reports, feature requests, and pull requests.
 
@@ -10,6 +10,11 @@ Here is a list of important resources for contributors:
 - [Documentation]
 - [Issue Tracker]
 - [Code of Conduct]
+
+[mit license]: https://opensource.org/licenses/MIT
+[source code]: https://github.com/tobi-de/cookiecutter-fastapi
+[documentation]: https://cookiecutter-fastapi.readthedocs.io/
+[issue tracker]: https://github.com/tobi-de/cookiecutter-fastapi/issues
 
 ## How to report a bug
 
@@ -34,26 +39,40 @@ Request features on the [Issue Tracker].
 
 You need Python 3.7+ and the following tools:
 
-- [Cookiecutter]
 - [Poetry]
 - [Nox]
 - [nox-poetry]
 
-Fork the repository on [GitHub],
-and clone the fork to your local machine. You can now generate a project
-from your development version:
+Install the package with development requirements:
 
 ```console
-$ cookiecutter path/to/cookiecutter-hypermodern-python
+$ poetry install
 ```
 
-You may also want to push your generated project to GitHub,
-and set up [continuous integration].
+You can now run an interactive Python session,
+or the command-line interface:
+
+```console
+$ poetry run python
+$ poetry run cookiecutter-fastapi
+```
+
+[poetry]: https://python-poetry.org/
+[nox]: https://nox.thea.codes/
+[nox-poetry]: https://nox-poetry.readthedocs.io/
 
 ## How to test the project
 
-Please refer to the [User Guide]
-for instructions on how to run the test suite locally.
+Run the full test suite:
+
+```console
+$ pytest
+```
+
+Unit tests are located in the _tests_ directory,
+and are written using the [pytest] testing framework.
+
+[pytest]: https://pytest.readthedocs.io/
 
 ## How to submit changes
 
@@ -70,81 +89,7 @@ Feel free to submit early, though—we can always iterate on this.
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
 
-## How to accept changes
-
-_You need to be a project maintainer to accept changes._
-
-Before accepting a pull request, go through the following checklist:
-
-- The PR must pass all checks.
-- The PR must have a descriptive title.
-- The PR should be labelled with the kind of change (see below).
-
-Release notes are pre-filled with titles and authors of merged pull requests.
-Labels group the pull requests into sections.
-The following list shows the available sections,
-with associated labels in parentheses:
-
-- 💥 Breaking Changes (`breaking`)
-- 🚀 Features (`enhancement`)
-- 🔥 Removals and Deprecations (`removal`)
-- 🐞 Fixes (`bug`)
-- 🐎 Performance (`performance`)
-- 🚨 Testing (`testing`)
-- 👷 Continuous Integration (`ci`)
-- 📚 Documentation (`documentation`)
-- 🔨 Refactoring (`refactoring`)
-- 💄 Style (`style`)
-- 📦 Dependencies (`dependencies`)
-
-To merge the pull request, follow these steps:
-
-1. Click **Squash and Merge**.
-   (Select this option from the dropdown menu of the merge button, if it is not shown.)
-2. Click **Confirm squash and merge**.
-3. Click **Delete branch**.
-
-## How to make a release
-
-_You need to be a project maintainer to make a release._
-
-Before making a release, go through the following checklist:
-
-- All pull requests for the release have been merged.
-- The default branch passes all checks.
-
-Releases are made by publishing a GitHub Release.
-A draft release is being maintained based on merged pull requests.
-To publish the release, follow these steps:
-
-1. Click **Edit** next to the draft release.
-2. Enter a tag with the new version.
-3. Enter the release title, also the new version.
-4. Edit the release description, if required.
-5. Click **Publish Release**.
-
-Version numbers adhere to [Calendar Versioning],
-of the form `YYYY.MM.DD`.
-
-After publishing the release, the following automated steps are triggered:
-
-- The Git tag is applied to the repository.
-- [Read the Docs] builds a new stable version of the documentation.
-
-[calendar versioning]: https://calver.org/
-[continuous integration]: https://cookiecutter-hypermodern-python.readthedocs.io/en/stable/quickstart.html#continuous-integration
-[cookiecutter]: https://cookiecutter.readthedocs.io/
-[documentation]: https://cookiecutter-hypermodern-python.readthedocs.io/
-[github]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-[issue tracker]: https://github.com/cjolowicz/cookiecutter-hypermodern-python/issues
-[mit license]: https://opensource.org/licenses/MIT
-[nox]: https://nox.thea.codes/
-[nox-poetry]: https://nox-poetry.readthedocs.io/
-[poetry]: https://python-poetry.org/
-[pull request]: https://github.com/cjolowicz/cookiecutter-hypermodern-python/pulls
-[read the docs]: https://cookiecutter-hypermodern-python.readthedocs.io/
-[source code]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-[user guide]: https://cookiecutter-hypermodern-python.readthedocs.io/en/latest/guide.html#how-to-test-your-project
+[pull request]: https://github.com/tobi-de/cookiecutter-fastapi/pulls
 
 <!-- github-only -->
 
