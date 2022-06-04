@@ -198,7 +198,7 @@ def info():
             )
 
     envs = "\n".join(
-        [f"{key}={value}" for key, value in settings.dict().items() if key != "PATHS"]
+        [f"{key}={value}" for key, value in settings.dict().items()]
     )
     title = typer.style("===> APP INFO <==============\n", fg=typer.colors.BLUE)
     typer.secho(title + app_health + "\n" + envs)

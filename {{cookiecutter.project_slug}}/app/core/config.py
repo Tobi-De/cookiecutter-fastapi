@@ -11,20 +11,25 @@ from pydantic import (
     PostgresDsn,
     RedisDsn,
     validator,
-    BaseModel,
 )
 
 
-class Paths(BaseModel):
-    # {{cookiecutter.project_slug}}/app
+class Paths:
+    # {{cookiecutter.project_slug}}
     ROOT_DIR: Path = Path(__file__).parent.parent.parent
     BASE_DIR: Path = ROOT_DIR / "app"
+    {% if cookiecutter.render_html != 'n' -%}
+    TEMPLATES_DIR: Path = BASE_DIR / "templates"
+    STATIC_FILES_DIR: Path = BASE_DIR / "static"
+    {% endif -%}
     EMAIL_TEMPLATES_DIR: Path = BASE_DIR / "emails"
     LOGIN_PATH: str = "/auth/login"
 
 
 class Settings(BaseSettings):
-    PATHS: Paths = Paths()
+    @property
+    def PATHS(self) -> Paths:
+        return Paths()
 
     SECRET_KEY: str
     DEBUG: bool = False

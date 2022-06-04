@@ -1,14 +1,14 @@
+from __future__ import annotations
+
 from typing import Generic, TypeVar
 
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 from tortoise.queryset import QuerySet
 
-from app.db.models import TimeStampedModel
 from .config import settings
 
-T = TypeVar("T", bound=TimeStampedModel)
-T_SCHEMA = TypeVar("T_SCHEMA", bound=BaseModel)
+T = TypeVar("T", bound=BaseModel)
 
 
 class Params(BaseModel):
@@ -16,12 +16,12 @@ class Params(BaseModel):
     offset: int = Field(0, gt=-1)
 
 
-class Page(GenericModel, Generic[T_SCHEMA]):
-    items: list[T_SCHEMA]
+class Page(GenericModel, Generic[T]):
+    items: list[T]
     total: int
 
 
-async def paginate(items: QuerySet[T], params: Params) -> dict:
+async def paginate(items: QuerySet, params: Params) -> dict:
     offset = params.offset
     limit = params.limit
     return {

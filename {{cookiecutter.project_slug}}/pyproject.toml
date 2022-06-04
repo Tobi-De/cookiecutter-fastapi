@@ -29,8 +29,7 @@ Jinja2 = "^3.1.2"
 httpx = "^0.23.0"
 {% if cookiecutter.mail_service == 'Amazon SES' -%}
 aioaws = "^0.13"
-{% endif -%}
-
+{% endif %}
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
 factory-boy = "^3.2.1"

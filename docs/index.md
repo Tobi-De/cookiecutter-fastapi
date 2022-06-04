@@ -1,17 +1,22 @@
-# Welcome to MkDocs
+```{include} ../README.md
+---
+end-before: <!-- github-only -->
+---
+```
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+[license]: license
+[contributor guide]: contributing
+[command-line reference]: usage
 
-## Commands
+```{toctree}
+---
+hidden:
+maxdepth: 1
+---
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+User Guide <userguide>
+Contributing <contributing>
+Code of Conduct <codeofconduct>
+License <license>
+Changelog <https://github.com/tobi-de/cookiecutter-fastapi/releases>
+```

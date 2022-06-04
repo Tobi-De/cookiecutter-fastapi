@@ -7,7 +7,6 @@ from email.mime.text import MIMEText
 from aiosmtplib import SMTP
 from aiosmtplib.errors import SMTPException
 
-from app.core.config import settings
 from app.core.logger import logger
 from .errors import SendEmailError
 

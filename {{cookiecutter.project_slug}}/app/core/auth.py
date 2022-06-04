@@ -15,8 +15,9 @@ from app.users.schemas import UserCreate, UserRead
 from .config import settings
 
 bearer_transport = BearerTransport(tokenUrl=settings.PATHS.LOGIN_PATH)
+{% if cookiecutter.render_html != 'n' -%}
 cookie_transport = CookieTransport(cookie_max_age=settings.AUTH_TOKEN_LIFETIME_SECONDS)
-
+{% endif %}
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
@@ -30,9 +31,20 @@ auth_backend = AuthenticationBackend(
     transport=bearer_transport,
     get_strategy=get_jwt_strategy,
 )
+{% if cookiecutter.render_html != 'n' -%}
+frontend_auth_backend = AuthenticationBackend(
+    name="cookie", transport=cookie_transport, get_strategy=get_jwt_strategy
+)
+{% endif %}
 
+{%- if cookiecutter.render_html == 'n' %}
 fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_backend])
-
+{% endif %}
+{% if cookiecutter.render_html != 'n' %}
+fastapi_users = FastAPIUsers[User, uuid.UUID](
+    get_user_manager, [auth_backend, frontend_auth_backend]
+)
+{% endif %}
 
 def get_auth_router() -> APIRouter:
     router = APIRouter(prefix="/auth", tags=["auth"])

@@ -14,5 +14,6 @@
    "mail_service": [
     "Amazon SES",
     "Other SMTP"
-  ]
+  ],
+  "render_html": "n"
 }

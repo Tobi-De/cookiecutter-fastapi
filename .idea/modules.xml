@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/cookiecutter-fastapi.iml" filepath="$PROJECT_DIR$/.idea/cookiecutter-fastapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grap/.idea/grap.iml" filepath="$PROJECT_DIR$/grap/.idea/grap.iml" />
     </modules>
   </component>
 </project>
