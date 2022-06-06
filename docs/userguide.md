@@ -78,7 +78,7 @@ any kind of structure on you, and that's great but sometimes (for other things t
 If you search for [fastapi projects on github](https://github.com/search?q=fastapi) you will get a lot of different styles and structures,
 most people work on the basis of their experience and the structure of this template represents mine, which is basically being a django developer,
 and it's probably the same for many python developers out there. The idea is the following: features bound to the same domain in the business logic are encapsulated in an application. 
-Applications should be small, simple and focus or task. E.g. the **users** app for users management.
+Applications should be small, simple and focus on a single task. E.g. the **users** app for users management.
 
 
 ### Why aren't all tests in the same folders? Why do apps have their own test folder?
