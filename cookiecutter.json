@@ -15,5 +15,6 @@
     "Amazon SES",
     "Other SMTP"
   ],
-  "render_html": "n"
+  "render_html": "n",
+  "use_heroku": "n"
 }

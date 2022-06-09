@@ -31,7 +31,7 @@ A [Cookiecutter](https://github.com/audreyr/cookiecutter) template for [fastapi]
 - [ ] [Docker](https://www.docker.com/) and [docker-compose](https://github.com/docker/compose) for production using [Traefik](https://github.com/traefik/traefik)
 - [x] Optional setup of HTML templates rendering using [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
 - [ ] Optional static files serving using [whitenoise](http://whitenoise.evans.io/en/stable/)
-- [ ] [Procfile](https://devcenter.heroku.com/articles/procfile) for deploying to heroku
+- [x] [Procfile](https://devcenter.heroku.com/articles/procfile) for deploying to heroku
 - [ ] Optional integration with [fastapi-storages](https://github.com/Tobi-De/fastapi-storages) for media files storage
 - [x] Implement the [Health Check API patterns](https://microservices.io/patterns/observability/health-check-api.html) on your fastapi application
 - [ ] Renders fastapi projects with 100% starting test coverage

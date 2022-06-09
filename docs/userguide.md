@@ -50,8 +50,10 @@
 - `.gitignore`: List common files and directories of python projects to keep out of git, read [here](https://git-scm.com/docs/gitignore) for more details.
 - `.pre-commit-config.yaml`: [pre-commit](https://pre-commit.com/) configuration file for auto formatting of your code on each commit.
 - `manage.py`: Cli app to simplify project management, run `python manage.py --help` for all available commands.
+- `Procfile`: [Heroku Procfile](https://devcenter.heroku.com/articles/procfile) configuration file, only present when you choose **y** to the **user_heroku** option.
 - `pyproject.toml`: Application dependencies, packaging data and metadata, for more details read [this](https://peps.python.org/pep-0621/).
 - `README.md`: Details and setup guide for your application.
+- `runtime.txt`: [Heroku runtime](https://devcenter.heroku.com/articles/python-runtimes) configuration file, only present when you choose **y** to the **user_heroku** option.
 - `setup.cfg`: A python configuration file for external tools like flake8, mypy etc., but I strongly recommend to put them in the `pyproject.toml` file if the tool supports it. This file will probably be removed in future versions when all tools used here add support for the `pyproject.toml` file.
 
 Most of the ideas and patterns that this template follows were inspired by OSS (open source software) projects and tools.

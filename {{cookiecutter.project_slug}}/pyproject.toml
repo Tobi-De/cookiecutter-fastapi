@@ -9,6 +9,7 @@ license = "{{cookiecutter.license}}"
 python = "^3.9"
 fastapi = "^0.78.0"
 uvicorn = "^0.17.6"
+gunicorn = "^20.1.0"
 pydantic = {extras = ["email", "dotenv"], version = "^1.9.1"}
 fastapi-users = "^10.0.6"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.19.1"}
