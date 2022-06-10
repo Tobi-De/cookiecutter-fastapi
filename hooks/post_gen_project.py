@@ -33,8 +33,6 @@ def main():
         Path().joinpath("app/services/email/ses.py").unlink()
     if "{{ cookiecutter.use_heroku }}" == "n":
         remove_heroku_files()
-    # if "{{ cookiecutter.use_docker }}" != "y":
-    #     remove_heroku_files()
 
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
     print(
