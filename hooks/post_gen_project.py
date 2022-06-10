@@ -15,7 +15,7 @@ def remove_render_html_dirs():
 def remove_heroku_files():
     files = ("runtime.txt", "Procfile")
     for file in files:
-        Path().joinpath(f"app/{file}").unlink()
+        Path().joinpath(file).unlink()
 
 
 def remove_docker_files():
