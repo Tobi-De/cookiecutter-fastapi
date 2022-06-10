@@ -26,6 +26,7 @@
       - `ses.py`: Email provider class to send email with [amazon ses](https://aws.amazon.com/fr/ses/) using [aioaws](https://github.com/samuelcolvin/aioaws). This file is only included if you choose **AMAZON SES** as **mail_service**.
       - `smtp.py`: Email provider class to send email via [smtp](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) using [aiosmtplib](https://aiosmtplib.readthedocs.io/en/stable/usage.html#authentication). This file is only included if you choose **SMTP** as **mail_service**.
   - `static`: Folder to store static files, only included if you enter **y** in the **render_html** option.
+    - `style.css`: Your project css.
   - `templates`: Html templates directory, only include if you enter **y** to the **render_html** option.
     - `base.html`: Base html for all your html templates.
     - `index.html`: Example html for the index page.

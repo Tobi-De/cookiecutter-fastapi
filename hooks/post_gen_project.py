@@ -8,8 +8,8 @@ INFO = "\x1b[1;33m [INFO]: "
 
 def remove_render_html_dirs():
     dirs = ("static", "frontend", "templates")
-    for dir in dirs:
-        shutil.rmtree(Path().joinpath(f"app/{dir}"))
+    for directory in dirs:
+        shutil.rmtree(Path().joinpath(f"app/{directory}"))
 
 
 def remove_heroku_files():

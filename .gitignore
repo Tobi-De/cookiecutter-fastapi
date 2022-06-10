@@ -131,3 +131,4 @@ dmypy.json
 poetry.lock
 .DS_Store
 my_fastapi_app/
+my_fastapi_project/
