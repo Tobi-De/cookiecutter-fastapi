@@ -10,15 +10,12 @@ from typing import cast
 import httpx
 import typer
 import uvicorn
-from aiosmtpd.controller import Controller
-from aiosmtpd.handlers import Debugging
 from arq.cli import watch_reload, run_worker as run_arq_worker
 from arq.logs import default_log_config
 from arq.typing import WorkerSettingsType
 from email_validator import EmailNotValidError, validate_email
 from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
 from tortoise import Tortoise, connections
-from traitlets.config import Config
 
 from app.core.config import settings
 from app.db.config import TORTOISE_ORM
@@ -37,6 +34,14 @@ def _validate_email(val: str):
     return val
 
 
+@cli.command("migrate-db")
+def migrate_db():
+    """Apply database migrations"""
+    import subprocess
+
+    subprocess.run(("aerich", "upgrade"))
+
+
 @cli.command("run-server")
 def run_server(
     port: int = 8000,
@@ -44,7 +49,8 @@ def run_server(
     log_level: str = "debug",
     reload: bool = True,
 ):
-    """Run the API server."""
+    """Run the API development server(uvicorn)."""
+    migrate_db()
     uvicorn.run(
         "app.main:app",
         host=host,
@@ -113,6 +119,7 @@ def shell():
     """Opens an interactive shell with objects auto imported"""
     try:
         from IPython import start_ipython
+        from traitlets.config import Config
     except ImportError:
         typer.secho(
             "Install iPython using `poetry add ipython` to use this feature.",
@@ -169,6 +176,9 @@ def run_worker(watch: bool = typer.Option(False)):
 @cli.command(help="run-mailserver")
 def run_mailserver(hostname: str = "localhost", port: int = 1025):
     """Run a test smtp server, for development purposes only, for a more robust option try MailHog"""
+    from aiosmtpd.controller import Controller
+    from aiosmtpd.handlers import Debugging
+
     typer.secho(f"Now accepting mail at {hostname}:{port}", fg=typer.colors.GREEN)
     controller = Controller(Debugging(), hostname=hostname, port=port)
     controller.start()
@@ -197,9 +207,7 @@ def info():
                 [f"{key.upper()}={value}" for key, value in resp.json().items()]
             )
 
-    envs = "\n".join(
-        [f"{key}={value}" for key, value in settings.dict().items()]
-    )
+    envs = "\n".join([f"{key}={value}" for key, value in settings.dict().items()])
     title = typer.style("===> APP INFO <==============\n", fg=typer.colors.BLUE)
     typer.secho(title + app_health + "\n" + envs)
 

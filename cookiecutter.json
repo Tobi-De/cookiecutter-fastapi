@@ -16,5 +16,6 @@
     "Other SMTP"
   ],
   "render_html": "n",
+  "use_docker": "y",
   "use_heroku": "n"
 }

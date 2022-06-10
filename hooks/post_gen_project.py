@@ -18,12 +18,6 @@ def remove_heroku_files():
         Path().joinpath(file).unlink()
 
 
-def remove_docker_files():
-    files = ("Dockerfile",)
-    for file in files:
-        Path().joinpath(f"app/{file}").unlink()
-
-
 def main():
     if "{{ cookiecutter.render_html }}" == "n":
         remove_render_html_dirs()
@@ -33,6 +27,8 @@ def main():
         Path().joinpath("app/services/email/ses.py").unlink()
     if "{{ cookiecutter.use_heroku }}" == "n":
         remove_heroku_files()
+    if "{{ cookiecutter.use_docker }}" != "y":
+        Path().joinpath("Dockerfile").unlink()
 
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
     print(
