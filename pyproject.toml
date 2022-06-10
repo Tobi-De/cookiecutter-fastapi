@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cookiecutter-fastapi"
-version = "0.1.0"
+version = "0.1.1"
 description = "Cookiecutter for fastapi projects"
 readme = "README.md"
 authors = ["Tobi-De <tobidegnon@protonmail.com>"]
