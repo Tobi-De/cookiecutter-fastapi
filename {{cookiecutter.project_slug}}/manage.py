@@ -60,6 +60,30 @@ def run_server(
     )
 
 
+@cli.command("run-prod-server")
+def run_prod_server():
+    """Run the API production server(gunicorn)."""
+    from gunicorn.app.base import Application
+    from gunicorn import util
+
+    config_file = str(
+        settings.PATHS.ROOT_DIR.joinpath("gunicorn.conf.py").resolve(strict=True)
+    )
+
+    class APPServer(Application):
+        def init(self, parser, opts, args):
+            pass
+
+        def load_config(self):
+            self.load_config_from_file(config_file)
+
+        def load(self):
+            return util.import_app("app.main:app")
+
+    migrate_db()
+    APPServer().run()
+
+
 @cli.command("create-user")
 def create_user(
     email: str = typer.Option(..., prompt=True, callback=_validate_email),

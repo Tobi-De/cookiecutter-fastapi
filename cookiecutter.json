@@ -10,6 +10,10 @@
     "Apache-2.0",
     "Proprietary"
   ],
+  "database": [
+    "Tortoise",
+    "Beanie"
+  ],
    "use_sentry": "y",
    "mail_service": [
     "Amazon SES",

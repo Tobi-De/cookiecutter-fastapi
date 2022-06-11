@@ -22,12 +22,9 @@ COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY supervisord.conf /etc/supervisord.conf
-
 COPY ./ /code
 
-ENV PORT=8000
-EXPOSE ${PORT}
+EXPOSE 80
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["python", "manage.py", "run-prod-server"]
 

@@ -57,7 +57,7 @@
 - `README.md`: Details and setup guide for your application.
 - `runtime.txt`: [Heroku runtime](https://devcenter.heroku.com/articles/python-runtimes) configuration file, only present when you choose **y** to the **user_heroku** option.
 - `setup.cfg`: A python configuration file for external tools like flake8, mypy etc., but I strongly recommend to put them in the `pyproject.toml` file if the tool supports it. This file will probably be removed in future versions when all tools used here add support for the `pyproject.toml` file.
-- `supervisord.conf`: [supervisor](http://supervisord.org/) configuration file for deployment on a linux server.
+- `gunicorn.conf.py`: [gunicorn](https://docs.gunicorn.org/en/stable/index.html) configuration file for deployment.
 
 Most of the ideas and patterns that this template follows were inspired by OSS (open source software) projects and tools.
 I took the most interesting (from my point of view) patterns and applied them when creating this cookiecutter, and you are by no 

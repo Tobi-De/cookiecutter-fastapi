@@ -8,6 +8,5 @@ updates:
     directory: "/{{cookiecutter.project_slug}}"
     schedule:
       interval: daily
-    versioning-strategy: lockfile-only
     allow:
       - dependency-type: "all"
