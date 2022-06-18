@@ -11,7 +11,9 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from .core.auth import get_auth_router
 from .core.config import settings
+{% if cookiecutter.database == "Tortoise" -%}
 from .db.config import register_db
+{% endif -%}
 {% if cookiecutter.render_html != 'n' -%}
 from .frontend.app import app as frontend_app
 {% endif -%}
@@ -60,7 +62,9 @@ def get_application() -> FastAPI:
         )
         _app.add_middleware(SentryAsgiMiddleware)
     {% endif %}
+    {% if cookiecutter.database == "Tortoise" -%}
     register_db(_app)
+    {% endif -%}
     _app.on_event("startup")(startup)
 
     return _app

@@ -15,7 +15,9 @@ from arq.logs import default_log_config
 from arq.typing import WorkerSettingsType
 from email_validator import EmailNotValidError, validate_email
 from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
+{% if cookiecutter.database == "Tortoise" -%}
 from tortoise import Tortoise, connections
+{% endif -%}
 
 from app.core.config import settings
 from app.db.config import TORTOISE_ORM
@@ -33,14 +35,14 @@ def _validate_email(val: str):
         raise typer.BadParameter(f"{val} is not a valid email")
     return val
 
-
+{% if cookiecutter.database == "Tortoise" -%}
 @cli.command("migrate-db")
 def migrate_db():
     """Apply database migrations"""
     import subprocess
 
     subprocess.run(("aerich", "upgrade"))
-
+{% endif %}
 
 @cli.command("run-server")
 def run_server(
@@ -50,7 +52,9 @@ def run_server(
     reload: bool = True,
 ):
     """Run the API development server(uvicorn)."""
+    {% if cookiecutter.database == "Tortoise" -%}
     migrate_db()
+    {% endif -%}
     uvicorn.run(
         "app.main:app",
         host=host,
@@ -80,7 +84,9 @@ def run_prod_server():
         def load(self):
             return util.import_app("app.main:app")
 
+    {% if cookiecutter.database == "Tortoise" -%}
     migrate_db()
+    {% endif -%}
     APPServer().run()
 
 
@@ -137,7 +143,7 @@ def start_app(app_name: str):
             f.write(content)
     typer.secho(f"App {package_name} created", fg=typer.colors.GREEN)
 
-
+{% if cookiecutter.database == "Tortoise" -%}
 @cli.command()
 def shell():
     """Opens an interactive shell with objects auto imported"""
@@ -179,7 +185,7 @@ def shell():
         user_ns={"teardown_shell": teardown_shell, "tortoise_init": tortoise_init},
         config=c,
     )
-
+{% endif -%}
 
 @cli.command("run-worker")
 def run_worker(watch: bool = typer.Option(False)):

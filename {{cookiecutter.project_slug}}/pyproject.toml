@@ -11,8 +11,14 @@ fastapi = "^0.78.0"
 uvicorn = "^0.17.6"
 pydantic = {extras = ["email", "dotenv"], version = "^1.9.1"}
 fastapi-users = "^10.0.6"
+{% if cookiecutter.database == "Tortoise" -%}
 tortoise-orm = {extras = ["asyncpg"], version = "^0.19.1"}
 fastapi-users-tortoise = "^0.2.0"
+{% endif -%}
+{% if cookiecutter.database == "Beanie" -%}
+fastapi-users = {extras = ["beanie"], version = "^10.0.7"}
+tortoise-orm = {extras = ["asyncpg"], version = "^0.19.1"}
+{% endif -%}
 aerich = "^0.6.3"
 arq = "^0.22"
 {% if cookiecutter.mail_service == 'Other SMTP' -%}
@@ -38,7 +44,7 @@ pre-commit = "^2.19.0"
 mypy = "^0.960"
 isort = "^5.10.1"
 flake8 = "^4.0.1"
-poetryup = "^0.7.2"
+poetryup = "^0.8.0"
 ipython = "^8.4.0"
 aiosmtpd = "^1.4.2"
 

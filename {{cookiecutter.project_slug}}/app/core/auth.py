@@ -1,4 +1,9 @@
+{% if cookiecutter.database == "Beanie" -%}
+from beanie import PydanticObjectId
+{% endif -%}
+{% if cookiecutter.database == "Tortoise" -%}
 import uuid
+{% endif -%}
 
 from fastapi import APIRouter
 from fastapi_users import FastAPIUsers
@@ -37,11 +42,20 @@ frontend_auth_backend = AuthenticationBackend(
 )
 {% endif %}
 
-{%- if cookiecutter.render_html == 'n' %}
+{%- if cookiecutter.render_html == 'n' and cookiecutter.database == "Tortoise" %}
 fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_backend])
 {% endif %}
-{% if cookiecutter.render_html != 'n' %}
+{% if cookiecutter.render_html != 'n'  and cookiecutter.database == "Tortoise" %}
 fastapi_users = FastAPIUsers[User, uuid.UUID](
+    get_user_manager, [auth_backend, frontend_auth_backend]
+)
+{% endif %}
+
+{%- if cookiecutter.render_html == 'n' and cookiecutter.database == "Beanie" %}
+fastapi_users = FastAPIUsers[User, PydanticObjectId](get_user_manager, [auth_backend])
+{% endif %}
+{% if cookiecutter.render_html != 'n' and cookiecutter.database == "Beanie" %}
+fastapi_users = FastAPIUsers[User, PydanticObjectId](
     get_user_manager, [auth_backend, frontend_auth_backend]
 )
 {% endif %}

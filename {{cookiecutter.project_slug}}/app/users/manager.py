@@ -1,18 +1,30 @@
 from __future__ import annotations
-
+{% if cookiecutter.database == "Tortoise" -%}
 from uuid import UUID
-
+{% endif -%}
+{% if cookiecutter.database == "Beanie" -%}
+from beanie import PydanticObjectId
+{% endif -%}
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, InvalidPasswordException, UUIDIDMixin
+{% if cookiecutter.database == "Tortoise" -%}
 from fastapi_users_tortoise import TortoiseUserDatabase
-
+{% endif -%}
+{% if cookiecutter.database == "Beanie" -%}
+from fastapi_users.db import BeanieUserDatabase, ObjectIDIDMixin
+{% endif -%}
 from app.core.config import settings
 from app.services.email import render_email_template
 from app.utils import enqueue_job
 from .models import User, get_user_db
 
-
+{% if cookiecutter.database == "Tortoise" -%}
 class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
+{% endif %}
+{% if cookiecutter.database == "Beanie" -%}
+class UserManager(UUIDIDMixin, BaseUserManager[User, PydanticObjectId]):
+{% endif %}
+
     reset_password_token_secret = settings.SECRET_KEY
     verification_token_secret = settings.SECRET_KEY
 
@@ -39,6 +51,11 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
             if condition:
                 raise InvalidPasswordException(msg)
 
-
+{% if cookiecutter.database == "Tortoise" -%}
 async def get_user_manager(user_db: TortoiseUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
+{% endif -%}
+{% if cookiecutter.database == "Beanie" -%}
+async def get_user_manager(user_db: BeanieUserDatabase = Depends(get_user_db)):
+    yield UserManager(user_db)
+{% endif -%}

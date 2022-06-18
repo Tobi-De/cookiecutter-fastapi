@@ -8,7 +8,12 @@ from pydantic import (
     BaseSettings,
     EmailStr,
     HttpUrl,
+    {% if cookiecutter.database == "Tortoise" -%}
     PostgresDsn,
+    {% endif -%}
+    {% if cookiecutter.database == "Beanie" -%}
+    AnyUrl,
+    {% endif -%}
     RedisDsn,
     validator,
 )
@@ -52,7 +57,12 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
+    {% if cookiecutter.database == "Beanie" -%}
+    DATABASE_URI: AnyUrl
+    {% endif -%}
+    {% if cookiecutter.database == "Tortoise" -%}
     DATABASE_URI: PostgresDsn
+    {% endif %}
 
     {% if cookiecutter.mail_service == 'Other SMTP' -%}
     SMTP_TLS: bool = True

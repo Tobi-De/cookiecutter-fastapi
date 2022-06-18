@@ -30,8 +30,6 @@
   - `templates`: Html templates directory, only include if you enter **y** to the **render_html** option.
     - `base.html`: Base html for all your html templates.
     - `index.html`: Example html for the index page.
-  - `tests`: Your application tests.
-    - `conftest.py`: Module to store pytest [fixtures](https://docs.pytest.org/en/6.2.x/fixture.html). 
   - `users`: Users management app.
      - `tests`: Tests for your users' app.
        - `factories.py`: Test factories for the users models.
@@ -47,6 +45,7 @@
   - `main.py`: Entry point of your application, the main **FastAPI** application is defined here.
   - `utils.py`: Global application utilities, which can be turned into a module later if there are too many.
   - `worker.py`: Task queue worker configuration file.
+- `tests`: Your application tests.
 - `.env.template`: A template to create your **.env** file.
 - `.gitignore`: List common files and directories of python projects to keep out of git, read [here](https://git-scm.com/docs/gitignore) for more details.
 - `Dockerfile`: Production [dockerfile](https://www.docker.com/) if you enter **y** to the **use_docker** option.

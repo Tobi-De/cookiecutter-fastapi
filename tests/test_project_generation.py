@@ -21,6 +21,8 @@ SUPPORTED_COMBINATIONS = (
     {"license": "Proprietary"},
     {"mail_service": "Amazon SES"},
     {"mail_service": "Other SMTP"},
+    {"database": "Tortoise"},
+    {"database": "Beanie"},
 )
 
 

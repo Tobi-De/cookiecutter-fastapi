@@ -13,8 +13,12 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/", response_model=Page[UserRead], dependencies=[Depends(current_user)])
 async def user_list(params: Params = Depends()):
+    {% if cookiecutter.database == "Tortoise" -%}
     return await paginate(User.all(), params)
-
+    {% endif %}
+    {% if cookiecutter.database == "Beanie" -%}
+    return await paginate(User.all().sort(User.email), params)
+    {% endif %}
 
 @router.get("/log-user-info")
 async def log_user_info(user: User = Depends(current_user)):

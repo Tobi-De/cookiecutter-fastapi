@@ -45,8 +45,8 @@ A [Cookiecutter](https://github.com/audreyr/cookiecutter) template for [fastapi]
 ### ORM/ODM options
 
 - [x] [Tortoise ORM](https://tortoise.github.io/)
+- [x] [Beanie](https://github.com/roman-right/beanie)
 - [ ] [RedisOM](https://github.com/redis/redis-om-python)
-- [ ] [Beanie](https://github.com/roman-right/beanie)
 - [ ] [SQLModel](https://github.com/tiangolo/sqlmodel)
 
 <!-- features-end -->
@@ -56,8 +56,10 @@ A [Cookiecutter](https://github.com/audreyr/cookiecutter) template for [fastapi]
 Install the cookiecutter package:
 
 ```shell
-pip install cookiecutter
+pip install cookiecutter black isort
 ```
+
+**Note**: `Black` and `isort` are used to format your project right after it has been generated.
 
 Now run it against this repo:
 
