@@ -38,11 +38,11 @@ def main():
     # try to format the code
     try:
         print(INFO + "Formatting with black" + TERMINATOR)
-        subprocess.run(("black", "app"), stdout=subprocess.DEVNULL)
+        subprocess.run(("black", "."), capture_output=True)
         print(INFO + "Formatting with isort" + TERMINATOR)
-        subprocess.run(("isort", "app"), stdout=subprocess.DEVNULL)
+        subprocess.run(("isort", "."), capture_output=True)
     except FileNotFoundError:
-        pass
+        print("Fail formatting")
 
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
     print(
