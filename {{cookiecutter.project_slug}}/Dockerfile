@@ -14,15 +14,15 @@ WORKDIR /code
 
 RUN apk update \
     && apk add --virtual build-deps build-base \
-    && apk add --no-cache libffi-dev redis \
-    && pip install --upgrade pip supervisor \
+    && apk add --no-cache libffi-dev \
+    && pip install --upgrade pip \
     && python --version
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./ /code
+COPY . /code
 
 EXPOSE 80
 
