@@ -25,7 +25,7 @@ aerich upgrade
 ## Run the fastapi app
 
 ```shell
-python manage.py runserver
+python manage.py run-server
 ```
 
 ## Cli
