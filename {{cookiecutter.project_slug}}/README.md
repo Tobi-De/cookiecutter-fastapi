@@ -2,7 +2,34 @@
 
 {{cookiecutter.project_description}}
 
-## Database setup
+
+## Prerequisites
+
+- `Python 3.9+`
+- `Poetry 1.2+`
+- `Postgresql 10+`
+
+
+## Development
+
+### `.env` example
+
+```shell
+DEBUG=True
+SERVER_HOST=http://localhost:8000
+SECRET_KEY=qwtqwubYA0pN1GMmKsFKHMw_WCbboJvdTAgM9Fq-UyM
+SMTP_PORT=1025
+SMTP_HOST=localhost
+SMTP_TLS=False
+BACKEND_CORS_ORIGINS=["http://localhost"]
+DATABASE_URI=postgres://postgres:password@localhost/{{cookiecutter.project_slug}}
+DEFAULT_FROM_EMAIL={{cookiecutter.project_name}}@gmail.com
+REDIS_URL=redis://localhost
+FIRST_SUPERUSER_EMAIL=admin@mail.com
+FIRST_SUPERUSER_PASSWORD=admin
+```
+
+### Database setup
 
 Create your first migration
 
@@ -22,13 +49,13 @@ Upgrading the database when new migrations are created.
 aerich upgrade
 ```
 
-## Run the fastapi app
+### Run the fastapi app
 
 ```shell
 python manage.py run-server
 ```
 
-## Cli
+### Cli
 
 There is a manage.py file at the root of the project, it contains a basic cli to hopefully
 help you manage your project more easily. To get all available commands type this:

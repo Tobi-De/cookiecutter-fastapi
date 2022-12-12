@@ -18,6 +18,18 @@ from pydantic import (
     validator,
 )
 
+try:
+    from enum import StrEnum
+except ImportError:
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
+
+
+class Environment(StrEnum):
+    dev = "dev"
+    prod = "prod"
 
 class Paths:
     # {{cookiecutter.project_slug}}
@@ -36,6 +48,7 @@ class Settings(BaseSettings):
     def PATHS(self) -> Paths:
         return Paths()
 
+    ENVIRONMENT: Environment = "dev"
     SECRET_KEY: str
     DEBUG: bool = False
     AUTH_TOKEN_LIFETIME_SECONDS = 3600
@@ -91,7 +104,6 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str
 
     class Config:
-        case_sensitive = True
         env_file = ".env"
 
 

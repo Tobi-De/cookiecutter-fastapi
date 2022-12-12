@@ -10,7 +10,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 {% endif %}
 
 from .core.auth import get_auth_router
-from .core.config import settings
+from .core.config import settings, Environment
 {% if cookiecutter.database == "Tortoise" -%}
 from .db.config import register_db
 {% endif -%}
@@ -53,7 +53,7 @@ def get_application() -> FastAPI:
         allow_headers=["*"],
     )
     {% if cookiecutter.use_sentry == 'y' -%}
-    if not settings.DEBUG:
+    if settings.ENVIRONMENT == Environment.prod:
         assert (
             settings.SENTRY_DSN
         ), "Set SENTRY_DSN to monitor and track errors in production!"

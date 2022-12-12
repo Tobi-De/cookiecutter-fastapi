@@ -13,7 +13,7 @@ from fastapi_users_tortoise import TortoiseUserDatabase
 {% if cookiecutter.database == "Beanie" -%}
 from fastapi_users.db import BeanieUserDatabase, ObjectIDIDMixin
 {% endif -%}
-from app.core.config import settings
+from app.core.config import settings, Environment
 from app.services.email import render_email_template
 from app.utils import enqueue_job
 from .models import User, get_user_db
@@ -41,12 +41,14 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, PydanticObjectId]):
         )
 
     async def validate_password(self, password: str, user: User) -> None:
-        conditions = {
-            "Password should be at least 8 characters": len(password) < 8,
-            "Password should not contain e-mail": user.email in password,
-            "Password should contain at least one number or special characters(@#*)": password.isalpha(),
-            "Password should not contain only numeric values": password.isnumeric(),
-        }
+        conditions = {}
+        if settings.ENVIRONMENT == Environment.prod:
+            conditions = {
+                "Password should be at least 8 characters": len(password) < 8,
+                "Password should not contain e-mail": user.email in password,
+                "Password should contain at least one number or special characters(@#*)": password.isalpha(),
+                "Password should not contain only numeric values": password.isnumeric(),
+            }
         for msg, condition in conditions.items():
             if condition:
                 raise InvalidPasswordException(msg)
