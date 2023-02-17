@@ -10,10 +10,10 @@ python = "^3.9"
 fastapi = "^0.88.0"
 uvicorn = "^0.20.0"
 pydantic = {extras = ["email", "dotenv"], version = "^1.10.2"}
-fastapi-users = "^10.1.5"
 {% if cookiecutter.database == "Tortoise" -%}
-tortoise-orm = {extras = ["asyncpg"], version = "^0.19.2"}
+fastapi-users = "^10.1.5"
 fastapi-users-tortoise = "^0.2.0"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.19.2"}
 aerich = "^0.7.1"
 {% endif -%}
 {% if cookiecutter.database == "Beanie" -%}
