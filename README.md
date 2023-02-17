@@ -4,7 +4,7 @@
 [![Status](https://img.shields.io/pypi/status/cookiecutter-fastapi.svg)][status]
 [![Read the documentation at https://cookiecutter-fastapi.readthedocs.io/](https://img.shields.io/readthedocs/cookiecutter-fastapi/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![python](https://img.shields.io/pypi/pyversions/cookiecutter-fastapi)](https://github.com/Tobi-De/cookiecutter-fastapi)
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Tobi-De/cookiecutter-fastapi/blob/main/LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Tobi-De/cookiecutter-fastapi/blob/main/LICENSE)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 [read the docs]: https://cookiecutter-fastapi.readthedocs.io/
