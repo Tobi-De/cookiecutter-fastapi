@@ -46,10 +46,12 @@ flake8 = "^6.0.0"
 ipython = "^8.7.0"
 aiosmtpd = "^1.4.2"
 
+{% if cookiecutter.database == "Tortoise" -%}
 [tool.aerich]
 tortoise_orm = "app.db.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+{% endif -%}
 
 [tool.isort]
 profile = "black"
