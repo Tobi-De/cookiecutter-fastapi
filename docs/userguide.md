@@ -110,7 +110,7 @@ I don't think this approach can scale to hundreds of html pages, so think twice 
 
 > **Note**: Checkout [htmx](https://htmx.org/) if you to improve your frontend development and user experience without relying on a complex SPA javascript framework.
 
-# Deployment
+## Deployment
 
 For deployment the official fastapi documentation has an excellent guide on the subject [here](https://fastapi.tiangolo.com/deployment/).
 If you want some platform recommendation check this [page](https://tobi-de.github.io/fuzzy-couscous/deployment/).
