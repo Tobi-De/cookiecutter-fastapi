@@ -69,38 +69,37 @@ This cookiecutter can't cover every use case, so here are some alternatives if t
 - [manage-fastapi](https://github.com/ycd/manage-fastapi)
 - [fastapi-nano](https://github.com/rednafi/fastapi-nano)
 
-## Why... ???
 
-This section addresses questions you may have about some of my design decisions.
+## Design Decisions
 
-### Why the apps/components thing anyway ?
+n this section, we'll explore some of the design decisions made in the creation of the cookicutter-fastapi project template. 
+We'll discuss the reasoning behind the choices made in terms of project structure, code organization, and other key aspects of the template. 
+This section is intended to provide insight into the thought process behind the template, as well as to help users understand why certain design decisions were made.
 
-I am a [django](https://www.djangoproject.com/) user, and I like its [concept of apps](https://docs.djangoproject.com/en/4.0/ref/applications/). 
-This cookiecutter tries to emulate that idea. I really like the idea of separating functionality into clear and distinct (and sometimes reusable) applications, 
-and I've been wanting to emulate this idea with fastapi for a while now. This is one of the main reasons why I created this cookiecutter. Fastapi does not impose 
-any kind of structure on you, and that's great but sometimes (for other things than test projects and tutorials) I need a well-structured and organized base to work on projects.
-If you search for [fastapi projects on github](https://github.com/search?q=fastapi) you will get a lot of different styles and structures,
-most people work on the basis of their experience and the structure of this template represents mine, which is basically being a django developer,
-and it's probably the same for many python developers out there. The idea is the following: features bound to the same domain in the business logic are encapsulated in an application. 
+### Use of Django-style "apps" in the Template
+
+> **TL;DR**: Features bound to the same domain in the business logic are encapsulated in an application. 
 Applications should be small, simple and focus on a single task. E.g. the **users** app for users management.
 
+One of the core design decisions of the `cookicutter-fastapi` project template is the use of the Django-style "apps" structure. 
+As a [Django](https://www.djangoproject.com/)  user, I appreciate the [concept of applications](https://docs.djangoproject.com/en/4.0/ref/applications/) which is basically the clear and distinct separation of functionality into reusable packages. 
+With this in mind, I set out to emulate this idea with FastAPI.
 
-### Why aren't all tests in the same folders? Why do apps have their own test folder?
+FastAPI does not impose any kind of structure on users, which is great for simple projects, but for more complex projects, a well-structured 
+and organized base is necessary. If you search for [FastAPI projects on GitHub](https://github.com/search?q=fastapi), you will find a wide variety of styles and structures, 
+each reflecting the experience and preferences of the individual developer. In the `cookicutter-fastapi` template, I have implemented a 
+structure that represents my own experience as a Django developer, and I believe it will be familiar and intuitive to many other django developers.
 
-For a while, I hesitated between putting all the tests in the same folder or separating them as I did.  
-I'm still not 100% sure I chose the best approach, and that may change in a future iteration of this project. Bottom line,
-applications are where you will spend most of your development time, they encapsulate your business logic and if you practice
-[TDD](https://en.wikipedia.org/wiki/Test-driven_development) and you should, it might be really more practical if 
-the tests for these applications are very close to the code of these applications. It may even motivate you to apply TDD if 
-you don't have to go too far away from the location of the code to be tested to write the tests. That's what I told myself when I chose this approach. 
-You can do whatever you prefer here and not follow this approach. If the `startapp` command bothers you by always creating a `tests` folder, 
-you can easily change the behavior of the command in the `manage.py` file. 
+The idea behind the `apps` structure is to encapsulate features that are bound to the same domain in the business logic within a single application. 
+Each application should be small, simple, and focused on a single task. For example in the context on an ecommerce web app, a `users` application 
+would be responsible for managing users, while an `orders` application would be responsible for managing orders. In my opinion, this structure allows 
+a better organization and a better maintainability of the project as it grows and becomes more complex.
 
-### Why put all the frontend files in a specific directory?
+### The frontend application
 
-Here too I hesitated a lot. When I use fastapi, it's usually for small backend services and not for full fledge SSR 
-projects (think of an e-commerce site with django or laravel for example). I mainly use fastapi for 
-relatively simple backend APIs and I rarely need to serve html and when I do it's for very few pages. If I needed to build
+When I use fastapi, it's usually for small backend services and not for full fledge server side rendered (SSR) 
+projects (think of an e-commerce site with django or laravel for example). I mainly use fastapi for relatively simple backend 
+APIs and I rarely need to serve html and when I do it's for very few pages. If I needed to build
 a big monolith that serves html, I would probably choose django. The idea here is that the `frontend` directory is
 an application in your project, it will serve the few html pages you need. If you build
 a public weather API for example, but you need a few html pages to present the project, a home page, a contact page and maybe some user 
@@ -108,5 +107,12 @@ account pages, you can use the frontend app for that instead of creating a separ
 <**place your favorite js framework here**> project for that. Spreading the routes for those pages in your API routes is not a good idea
 in my opinion. The `frontend` application is a bit special in that it is a full Fastapi application [that is mounted](https://fastapi.tiangolo.com/advanced/sub-applications/) on top of your main application.
 I don't think this approach can scale to hundreds of html pages, so think twice before you consider using it for a huge project (frankly I don't know, I haven't tried it, I could be wrong).
+
+> **Note**: Checkout [htmx](https://htmx.org/) if you to improve your frontend development and user experience without relying on a complex SPA javascript framework.
+
+# Deployment
+
+For deployment the official fastapi documentation has an excellent guide on the subject [here](https://fastapi.tiangolo.com/deployment/).
+If you want some platform recommendation check this [page](https://tobi-de.github.io/fuzzy-couscous/deployment/).
 
 **Note**: This page is a work in progress, new content will be added with new release of `cookiecutter-fastapi`.
