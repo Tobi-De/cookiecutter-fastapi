@@ -7,28 +7,28 @@ license = "{{cookiecutter.license}}"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.92.0"
-uvicorn = "^0.20.0"
-pydantic = {extras = ["email", "dotenv"], version = "^1.10.5"}
+fastapi = "^0.94.1"
+uvicorn = "^0.21.1"
+pydantic = {extras = ["email", "dotenv"], version = "^1.10.6"}
 {% if cookiecutter.database == "Tortoise" -%}
-fastapi-users = "^10.4.0"
+fastapi-users = "^10.4.1"
 fastapi-users-tortoise = "^0.2.0"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.19.3"}
 aerich = "^0.7.1"
 {% endif -%}
 {% if cookiecutter.database == "Beanie" -%}
-fastapi-users = {extras = ["beanie"], version = "^10.4.0"}
+fastapi-users = {extras = ["beanie"], version = "^10.4.1"}
 {% endif -%}
 arq = "^0.25.0"
 {% if cookiecutter.mail_service == 'Other SMTP' -%}
 aiosmtplib = "^1.1.6"
 {% endif -%}
-python-multipart = "^0.0.5"
+python-multipart = "^0.0.6"
 {% if cookiecutter.use_sentry == 'y' -%}
-sentry-sdk = "^1.15.0"
+sentry-sdk = "^1.17.0"
 redis = "^4.5.1"
 {% endif -%}
-rich = "^13.3.1"
+rich = "^13.3.2"
 typer = "^0.7.0"
 watchgod = "^0.8.2"
 Jinja2 = "^3.1.2"
@@ -37,13 +37,13 @@ httpx = "^0.23.3"
 aioaws = "^0.14"
 {% endif %}
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.2.1"
+pytest = "^7.2.2"
 factory-boy = "^3.2.1"
-pre-commit = "^3.0.4"
-mypy = "^1.0.1"
+pre-commit = "^3.1.1"
+mypy = "^1.1.1"
 isort = "^5.12.0"
 flake8 = "^6.0.0"
-ipython = "^8.10.0"
+ipython = "^8.11.0"
 aiosmtpd = "^1.4.4.post2"
 
 {% if cookiecutter.database == "Tortoise" -%}
