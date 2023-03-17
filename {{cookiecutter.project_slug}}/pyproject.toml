@@ -19,14 +19,14 @@ aerich = "^0.7.1"
 {% if cookiecutter.database == "Beanie" -%}
 fastapi-users = {extras = ["beanie"], version = "^10.4.1"}
 {% endif -%}
-arq = "^0.25.0"
+saq = {extras = ["hiredis", "web"], version = "^0.9.3"}
+hupper = "^1.11"
 {% if cookiecutter.mail_service == 'Other SMTP' -%}
 aiosmtplib = "^1.1.6"
 {% endif -%}
 python-multipart = "^0.0.6"
 {% if cookiecutter.use_sentry == 'y' -%}
 sentry-sdk = "^1.17.0"
-redis = "^4.5.1"
 {% endif -%}
 rich = "^13.3.2"
 typer = "^0.7.0"

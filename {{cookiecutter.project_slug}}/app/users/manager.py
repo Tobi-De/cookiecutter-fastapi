@@ -15,7 +15,7 @@ from fastapi_users.db import BeanieUserDatabase, ObjectIDIDMixin
 {% endif -%}
 from app.core.config import settings, Environment
 from app.services.email import render_email_template
-from app.utils import enqueue_job
+from app.worker import queue
 from .models import User, get_user_db
 
 {% if cookiecutter.database == "Tortoise" -%}
@@ -33,7 +33,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     ) -> None:
         name = user.full_name or user.short_name
         subject = f"Welcome to {name}!" if name else "Welcome!"
-        await enqueue_job(
+        await queue.enqueue(
             "send_email_task",
             recipient=(user.email, None),
             subject=subject,

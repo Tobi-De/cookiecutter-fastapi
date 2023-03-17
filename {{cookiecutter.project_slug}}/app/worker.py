@@ -1,4 +1,4 @@
-from arq.connections import RedisSettings
+from saq import Queue
 from pydantic.utils import import_string
 {% if cookiecutter.database == "Tortoise" -%}
 from tortoise import Tortoise
@@ -12,11 +12,11 @@ from .db.config import TORTOISE_ORM
 from .db.config import init_db
 {% endif %}
 
-ARQ_BACKGROUND_FUNCTIONS = [
+BACKGROUND_FUNCTIONS = [
     "app.users.tasks.log_user_email",
     "app.services.email.send_email_task",
 ]
-FUNCTIONS = [import_string(bg_func) for bg_func in ARQ_BACKGROUND_FUNCTIONS]
+FUNCTIONS = [import_string(bg_func) for bg_func in BACKGROUND_FUNCTIONS]
 
 
 async def startup(_: dict):
@@ -38,14 +38,13 @@ async def shutdown(_: dict):
     await Tortoise.close_connections()
 {% endif %}
 
-class WorkerSettings:
-    """
-    Settings for the ARQ worker.
-    """
+queue = Queue.from_url(settings.REDIS_URL)
 
-    on_startup = startup
-    {% if cookiecutter.database == "Tortoise" -%}
-    on_shutdown = shutdown
-    {% endif -%}
-    redis_settings = RedisSettings.from_dsn(dsn=settings.REDIS_URL)
-    functions = FUNCTIONS
+settings = {
+    "queue": queue,
+    "functions": FUNCTIONS,
+    "concurrency": 10,
+    "startup": startup,
+    "shutdown": shutdown,
+}
+

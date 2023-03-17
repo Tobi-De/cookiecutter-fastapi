@@ -1,18 +1,14 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 import secrets
+import subprocess
 from functools import partial
 from itertools import chain
-from typing import cast
 
 import httpx
 import typer
 import uvicorn
-from arq.cli import watch_reload, run_worker as run_arq_worker
-from arq.logs import default_log_config
-from arq.typing import WorkerSettingsType
 from email_validator import EmailNotValidError, validate_email
 from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
 {% if cookiecutter.database == "Tortoise" -%}
@@ -23,7 +19,6 @@ from app.core.config import settings
 from app.db.config import TORTOISE_ORM
 from app.users import utils
 from app.users.schemas import UserCreate
-from app.worker import WorkerSettings
 
 cli = typer.Typer()
 
@@ -188,19 +183,12 @@ def shell():
 {% endif -%}
 
 @cli.command("run-worker")
-def run_worker(watch: bool = typer.Option(False)):
-    """Run the arq worker process"""
-    logging.config.dictConfig(default_log_config(True))
-    conf = cast(WorkerSettingsType, WorkerSettings)
-    if watch:
-        asyncio.new_event_loop().run_until_complete(
-            watch_reload(
-                settings.BASE_DIR.resolve(strict=True),
-                conf,
-            )
-        )
+def run_worker(reload: bool = typer.Option(False)):
+    """Run the saq worker process"""
+    if reload:
+        subprocess.run(["hupper", "-m", "saq", "app.worker.settings", "--web"])
     else:
-        run_arq_worker(conf)
+        subprocess.run(["python", "-m", "saq", "app.worker.settings", "--web"])
 
 
 @cli.command(help="run-mailserver")
