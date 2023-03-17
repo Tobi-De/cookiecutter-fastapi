@@ -52,7 +52,7 @@ aerich upgrade
 ### Run the fastapi app
 
 ```shell
-python manage.py run-server
+python manage.py work
 ```
 
 ### Cli

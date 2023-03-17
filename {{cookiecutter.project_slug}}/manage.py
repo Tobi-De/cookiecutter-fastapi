@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import os
+import sys
 import asyncio
 import secrets
 import subprocess
 from functools import partial
 from itertools import chain
+from pathlib import Path
 
 import httpx
 import typer
@@ -14,6 +17,7 @@ from fastapi_users.exceptions import InvalidPasswordException, UserAlreadyExists
 {% if cookiecutter.database == "Tortoise" -%}
 from tortoise import Tortoise, connections
 {% endif -%}
+from honcho.manager import Manager as HonchoManager
 
 from app.core.config import settings
 from app.db.config import TORTOISE_ORM
@@ -38,6 +42,28 @@ def migrate_db():
 
     subprocess.run(("aerich", "upgrade"))
 {% endif %}
+
+@cli.command("work")
+def work(mailserver: bool = typer.Option(False)):
+    """Run all the dev services in a single command."""
+    manager = HonchoManager()
+    project_env = {
+        **os.environ,
+        "PYTHONPATH": str(Path().resolve(strict=True)),
+        "PYTHONUNBUFFERED": "true",
+    }
+    manager.add_process("redis", "redis-server")
+    {% if cookiecutter.database == "Tortoise" -%}
+    manager.add_process("server", "aerich upgrade && python manage.py run-server", env=project_env)
+    {% else %}
+    manager.add_process("server", "python manage.py run-server", env=project_env)
+    {% endif -%}
+    manager.add_process("worker", "python manage.py run-worker", env=project_env)
+    if mailserver:
+        manager.add_process("mailserver", "python manage.py run-mailserver")
+
+    manager.loop()
+    sys.exit(manager.returncode)
 
 @cli.command("run-server")
 def run_server(
@@ -183,7 +209,7 @@ def shell():
 {% endif -%}
 
 @cli.command("run-worker")
-def run_worker(reload: bool = typer.Option(False)):
+def run_worker(reload: bool = typer.Option(True)):
     """Run the saq worker process"""
     if reload:
         subprocess.run(["hupper", "-m", "saq", "app.worker.settings", "--web"])

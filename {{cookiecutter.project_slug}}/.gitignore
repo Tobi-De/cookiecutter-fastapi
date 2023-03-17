@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharm config
 .idea/
+
+/dump.rdb
+
