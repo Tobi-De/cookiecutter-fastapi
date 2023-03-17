@@ -65,6 +65,19 @@ show_error_codes = true
 show_error_context = true
 ignore_missing_imports = true
 
+[tool.ruff]
+line-length = 120
+select = [
+    "E", # https://github.com/charliermarsh/ruff#pycodestylet
+    "F", # https://github.com/charliermarsh/ruff#pyflakes
+    "UP", # https://github.com/charliermarsh/ruff#pyupgrade
+    "N", # https://github.com/charliermarsh/ruff#pep8-naming
+    "S", # https://github.com/charliermarsh/ruff#flake8-bandit
+    "C", # https://github.com/charliermarsh/ruff#flake8-comprehensions
+    "B", # https://github.com/charliermarsh/ruff#flake8-bugbear
+    "T" # https://github.com/charliermarsh/ruff#flake8-print
+]
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
