@@ -51,8 +51,15 @@ Now run it against this repo:
 ```shell
 cookiecutter https://github.com/Tobi-De/cookiecutter-fastapi
 ```
-
 You'll be prompted for some values. Provide them, then a fastapi project will be created for you.
+
+You could also use [cruft](https://github.com/cruft/cruft) to be able to keep your project up to date with the latest changes:
+
+```shell
+pip install cruft
+cruft create https://github.com/Tobi-De/cookiecutter-fastapi
+```
+It work pretty much the same way as cookiecutter but you'll be able to update your project with the latest changes by running `cruft update`.
 
 ## Contributing
 
