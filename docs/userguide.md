@@ -115,4 +115,4 @@ I don't think this approach can scale to hundreds of html pages, so think twice 
 For deployment the official fastapi documentation has an excellent guide on the subject [here](https://fastapi.tiangolo.com/deployment/).
 If you want some platform recommendation check this [page](https://tobi-de.github.io/fuzzy-couscous/deployment/).
 
-**Note**: This page is a work in progress, new content will be added with new release of `cookiecutter-fastapi`.
+> **Note**: This page is a work in progress, new content will be added with new release of `cookiecutter-fastapi`.
