@@ -26,7 +26,7 @@ A [Cookiecutter](https://github.com/audreyr/cookiecutter) template for [fastapi]
 -  Sending emails using [aiosmtplib](https://aiosmtplib.readthedocs.io/en/stable/client.html) or [Amazon SES](https://aws.amazon.com/fr/ses/)
 -  Optional integration with [sentry](https://docs.sentry.io/platforms/python/) for error logging
 -  Production [Dockerfile](https://www.docker.com/) included
--  Integration with [arq](https://github.com/samuelcolvin/arq) for background tasks
+-  Integration with [saq](https://github.com/tobymao/saq) for background tasks
 -  Optional setup of HTML templates rendering using [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
 -  [Procfile](https://devcenter.heroku.com/articles/procfile) for deploying to heroku
 -  Implement the [Health Check API patterns](https://microservices.io/patterns/observability/health-check-api.html) on your fastapi application
