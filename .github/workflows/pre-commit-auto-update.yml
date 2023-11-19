@@ -29,9 +29,6 @@ jobs:
       - name: Install pre-commit
         run: pip install pre-commit
 
-      - name: Autoupdate template
-        run: pre-commit autoupdate
-
       - name: Autoupdate generated projects
         working-directory: "{{cookiecutter.project_slug}}"
         run: pre-commit autoupdate
