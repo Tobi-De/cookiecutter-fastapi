@@ -7,7 +7,7 @@ license = "{{cookiecutter.license}}"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.109.1"
+fastapi = "^0.109.2"
 uvicorn = "^0.21.1"
 pydantic = {extras = ["email", "dotenv"], version = "^1.10.6"}
 {% if cookiecutter.database == "Tortoise" -%}
@@ -24,7 +24,7 @@ hupper = "^1.11"
 {% if cookiecutter.mail_service == 'Other SMTP' -%}
 aiosmtplib = "^1.1.6"
 {% endif -%}
-python-multipart = "^0.0.6"
+python-multipart = "^0.0.9"
 {% if cookiecutter.use_sentry == 'y' -%}
 sentry-sdk = "^1.17.0"
 {% endif -%}
