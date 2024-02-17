@@ -7,7 +7,7 @@ license = "{{cookiecutter.license}}"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.94.1"
+fastapi = "^0.109.1"
 uvicorn = "^0.21.1"
 pydantic = {extras = ["email", "dotenv"], version = "^1.10.6"}
 {% if cookiecutter.database == "Tortoise" -%}
