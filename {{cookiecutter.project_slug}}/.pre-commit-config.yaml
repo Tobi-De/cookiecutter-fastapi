@@ -14,7 +14,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/myint/autoflake
-  rev: v2.2.1
+  rev: v2.3.0
   hooks:
     - id: autoflake
       exclude: .*/__init__.py
