@@ -41,7 +41,7 @@ repos:
     - id: reorder-python-imports
 
 - repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.4.9
+  rev: v0.4.10
   hooks:
     - id: ruff
 
