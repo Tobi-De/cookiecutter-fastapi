@@ -272,7 +272,7 @@ def info():
                 [f"{key.upper()}={value}" for key, value in resp.json().items()]
             )
 
-    envs = "\n".join([f"{key}={value}" for key, value in settings.dict().items()])
+    envs = "\n".join([f"{key}={value}" for key, value in settings.model_dump().items()])
     title = typer.style("===> APP INFO <==============\n", fg=typer.colors.BLUE)
     typer.secho(title + app_health + "\n" + envs)
 

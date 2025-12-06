@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Generic, TypeVar
 
 from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
 {% if cookiecutter.database == "Beanie" -%}
 from beanie.odm.queries.find import FindMany
 {% endif -%}
@@ -21,7 +20,7 @@ class Params(BaseModel):
     offset: int = Field(0, gt=-1)
 
 
-class Page(GenericModel, Generic[T]):
+class Page(BaseModel, Generic[T]):
     items: list[T]
     total: int
 
