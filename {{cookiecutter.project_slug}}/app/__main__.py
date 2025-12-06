@@ -39,61 +39,13 @@ def _validate_email(val: str):
 
 
 # Integrate FastAPI CLI commands
-try:
-    from fastapi_cli.cli import app as fastapi_cli_app
-    
-    # Add FastAPI CLI commands (dev and run) to our CLI
-    # Note: We directly append to registered_commands as this is the standard
-    # way to programmatically add commands to a Typer app in this context
-    for cmd_info in fastapi_cli_app.registered_commands:
-        cli.registered_commands.append(cmd_info)
-except ImportError:
-    # If fastapi-cli is not installed, provide fallback commands
-    @cli.command("dev")
-    def dev(
-        port: int = 8000,
-        host: str = "127.0.0.1",
-        log_level: str = "debug",
-        reload: bool = True,
-    ):
-        """Run the API development server (uvicorn). Alias for run-server."""
-        {% if cookiecutter.database == "Tortoise" -%}
-        # Run migrations first
-        subprocess.run(("aerich", "upgrade"))
-        {% endif -%}
-        uvicorn.run(
-            "app.main:app",
-            host=host,
-            port=port,
-            log_level=log_level,
-            reload=reload,
-        )
+from fastapi_cli.cli import app as fastapi_cli_app
 
-    @cli.command("run")
-    def run():
-        """Run the API production server (gunicorn). Alias for run-prod-server."""
-        from gunicorn.app.base import Application
-        from gunicorn import util
-
-        config_file = str(
-            settings.PATHS.ROOT_DIR.joinpath("gunicorn.conf.py").resolve(strict=True)
-        )
-
-        class APPServer(Application):
-            def init(self, parser, opts, args):
-                pass
-
-            def load_config(self):
-                self.load_config_from_file(config_file)
-
-            def load(self):
-                return util.import_app("app.main:app")
-
-        {% if cookiecutter.database == "Tortoise" -%}
-        # Run migrations first
-        subprocess.run(("aerich", "upgrade"))
-        {% endif -%}
-        APPServer().run()
+# Add FastAPI CLI commands (dev and run) to our CLI
+# Note: We directly append to registered_commands as this is the standard
+# way to programmatically add commands to a Typer app in this context
+for cmd_info in fastapi_cli_app.registered_commands:
+    cli.registered_commands.append(cmd_info)
 
 
 # Custom commands from the original manage.py
