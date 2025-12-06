@@ -108,10 +108,13 @@ jobs:
         run: |
           cd test_project
           uv sync
+          # Note: Dependencies must install successfully to run the info command test below
 
       - name: Create minimal .env file
         run: |
           cd test_project
+          # Create .env with dummy but valid URLs (services don't need to be running)
+          # The info command validates settings format but doesn't connect to services
           cat > .env << EOF
           SECRET_KEY=test-secret-key-for-ci-only-do-not-use-in-production
           REDIS_URL=redis://localhost:6379/0
