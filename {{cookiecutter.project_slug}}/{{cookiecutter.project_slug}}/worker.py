@@ -13,8 +13,8 @@ from .db.config import init_db
 {% endif %}
 
 BACKGROUND_FUNCTIONS = [
-    "app.users.tasks.log_user_email",
-    "app.services.email.send_email_task",
+    "{{cookiecutter.project_slug}}.users.tasks.log_user_email",
+    "{{cookiecutter.project_slug}}.services.email.send_email_task",
 ]
 
 

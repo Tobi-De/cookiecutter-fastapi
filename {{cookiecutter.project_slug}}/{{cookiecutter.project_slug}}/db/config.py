@@ -2,14 +2,14 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.config import settings
 
 
 TORTOISE_ORM = {
     "connections": {"default": settings.DATABASE_URI},
     "apps": {
         "models": {
-            "models": ["app.users.models", "aerich.models"],
+            "models": ["{{cookiecutter.project_slug}}.users.models", "aerich.models"],
             "default_connection": "default",
         },
     },
@@ -28,12 +28,12 @@ def register_db(app: FastAPI) -> None:
 import motor.motor_asyncio
 from beanie import init_beanie
 
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.config import settings
 
 
 async def init_db():
     client = motor.motor_asyncio.AsyncIOMotorClient(settings.DATABASE_URI)
     await init_beanie(
-        database=client.db_name, document_models=["app.users.models.User"]
+        database=client.db_name, document_models=["{{cookiecutter.project_slug}}.users.models.User"]
     )
 {% endif -%}

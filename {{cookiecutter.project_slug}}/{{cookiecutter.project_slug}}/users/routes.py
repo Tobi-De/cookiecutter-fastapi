@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
-from app.core.pagination import Page, Params, paginate
+from {{cookiecutter.project_slug}}.core.pagination import Page, Params, paginate
 
-from app.core.auth import fastapi_users
-from app.worker import queue
+from {{cookiecutter.project_slug}}.core.auth import fastapi_users
+from {{cookiecutter.project_slug}}.worker import queue
 
-from app.core.auth import current_user
+from {{cookiecutter.project_slug}}.core.auth import current_user
 from .models import User
 from .schemas import UserRead, UserUpdate
 

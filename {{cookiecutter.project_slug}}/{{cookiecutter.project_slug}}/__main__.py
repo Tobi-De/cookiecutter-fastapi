@@ -19,12 +19,12 @@ from tortoise import Tortoise, connections
 {% endif -%}
 from honcho.manager import Manager as HonchoManager
 
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.config import settings
 {% if cookiecutter.database == "Tortoise" -%}
-from app.db.config import TORTOISE_ORM
+from {{cookiecutter.project_slug}}.db.config import TORTOISE_ORM
 {% endif -%}
-from app.users import utils
-from app.users.schemas import UserCreate
+from {{cookiecutter.project_slug}}.users import utils
+from {{cookiecutter.project_slug}}.users.schemas import UserCreate
 
 # Main CLI app
 cli = typer.Typer()
@@ -68,13 +68,13 @@ def work(mailserver: bool = typer.Option(False)):
     }
     manager.add_process("redis", "redis-server")
     {% if cookiecutter.database == "Tortoise" -%}
-    manager.add_process("server", f"aerich upgrade && {sys.executable} -m app dev", env=project_env)
+    manager.add_process("server", f"aerich upgrade && {sys.executable} -m {{cookiecutter.project_slug}} dev", env=project_env)
     {% else %}
-    manager.add_process("server", f"{sys.executable} -m app dev", env=project_env)
+    manager.add_process("server", f"{sys.executable} -m {{cookiecutter.project_slug}} dev", env=project_env)
     {% endif -%}
-    manager.add_process("worker", f"{sys.executable} -m app run-worker", env=project_env)
+    manager.add_process("worker", f"{sys.executable} -m {{cookiecutter.project_slug}} run-worker", env=project_env)
     if mailserver:
-        manager.add_process("mailserver", f"{sys.executable} -m app run-mailserver")
+        manager.add_process("mailserver", f"{sys.executable} -m {{cookiecutter.project_slug}} run-mailserver")
 
     manager.loop()
     sys.exit(manager.returncode)
@@ -92,7 +92,7 @@ def run_server(
     migrate_db()
     {% endif -%}
     uvicorn.run(
-        "app.main:app",
+        "{{cookiecutter.project_slug}}.main:app",
         host=host,
         port=port,
         log_level=log_level,
@@ -118,7 +118,7 @@ def run_prod_server():
             self.load_config_from_file(config_file)
 
         def load(self):
-            return util.import_app("app.main:app")
+            return util.import_app("{{cookiecutter.project_slug}}.main:app")
 
     {% if cookiecutter.database == "Tortoise" -%}
     migrate_db()
@@ -170,7 +170,7 @@ def start_app(app_name: str):
     app_dir = settings.BASE_DIR / package_name
     files = {
         "__init__.py": "",
-        "models.py": "from app.db.models import TimeStampedModel",
+        "models.py": "from {{cookiecutter.project_slug}}.db.models import TimeStampedModel",
         "schemas.py": "from pydantic import BaseModel",
         "routes.py": f"from fastapi import APIRouter\n\nrouter = APIRouter(prefix='/{package_name}')",
         "tests/__init__.py": "",
@@ -233,9 +233,9 @@ def shell():
 def run_worker(reload: bool = typer.Option(True)):
     """Run the saq worker process"""
     if reload:
-        subprocess.run(["hupper", "-m", "saq", "app.worker.settings", "--web"])
+        subprocess.run(["hupper", "-m", "saq", "{{cookiecutter.project_slug}}.worker.settings", "--web"])
     else:
-        subprocess.run(["python", "-m", "saq", "app.worker.settings", "--web"])
+        subprocess.run(["python", "-m", "saq", "{{cookiecutter.project_slug}}.worker.settings", "--web"])
 
 
 @cli.command(help="run-mailserver")

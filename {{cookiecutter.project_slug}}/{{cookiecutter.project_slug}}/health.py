@@ -3,8 +3,8 @@ from fastapi import APIRouter, Response, status
 from pydantic import BaseModel
 from tortoise.exceptions import DBConnectionError
 
-from app.core.logger import logger
-from app.worker import queue
+from {{cookiecutter.project_slug}}.core.logger import logger
+from {{cookiecutter.project_slug}}.worker import queue
 from .users.models import User
 
 router = APIRouter(prefix="/health")

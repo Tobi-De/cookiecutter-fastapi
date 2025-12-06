@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from aioaws.ses import SesConfig, SesClient, SesRecipient
 from httpx import AsyncClient, RequestError
 
-from app.core.logger import logger
+from {{cookiecutter.project_slug}}.core.logger import logger
 from .errors import SendEmailError
 
 

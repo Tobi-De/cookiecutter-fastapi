@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from app.core.auth import fastapi_users, frontend_auth_backend
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.auth import fastapi_users, frontend_auth_backend
+from {{cookiecutter.project_slug}}.core.config import settings
 from .routers.home import router as home_router
 
 

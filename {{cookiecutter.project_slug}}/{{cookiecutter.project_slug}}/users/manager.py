@@ -13,9 +13,9 @@ from fastapi_users_tortoise import TortoiseUserDatabase
 {% if cookiecutter.database == "Beanie" -%}
 from fastapi_users.db import BeanieUserDatabase, ObjectIDIDMixin
 {% endif -%}
-from app.core.config import settings, Environment
-from app.services.email import render_email_template
-from app.worker import queue
+from {{cookiecutter.project_slug}}.core.config import settings, Environment
+from {{cookiecutter.project_slug}}.services.email import render_email_template
+from {{cookiecutter.project_slug}}.worker import queue
 from .models import User, get_user_db
 
 {% if cookiecutter.database == "Tortoise" -%}

@@ -35,7 +35,7 @@ class Environment(StrEnum):
 class Paths:
     # {{cookiecutter.project_slug}}
     ROOT_DIR: Path = Path(__file__).parent.parent.parent
-    BASE_DIR: Path = ROOT_DIR / "app"
+    BASE_DIR: Path = ROOT_DIR / "{{cookiecutter.project_slug}}"
     {% if cookiecutter.render_html != 'n' -%}
     TEMPLATES_DIR: Path = BASE_DIR / "templates"
     STATIC_FILES_DIR: Path = BASE_DIR / "static"

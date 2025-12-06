@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from app.frontend.utils import render_html
+from {{cookiecutter.project_slug}}.frontend.utils import render_html
 
 router = APIRouter()
 

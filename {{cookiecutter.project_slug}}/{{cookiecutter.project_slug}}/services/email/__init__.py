@@ -5,7 +5,7 @@ from typing import Protocol, Any
 
 import jinja2
 
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.config import settings
 from .null import Null
 {% if cookiecutter.mail_service == 'Amazon SES' -%}
 from .ses import SES

@@ -18,13 +18,13 @@ def remove_files_and_folders(*args: str):
 
 def main():
     if "{{ cookiecutter.render_html }}" == "n":
-        remove_files_and_folders("app/static", "app/frontend", "app/templates")
+        remove_files_and_folders("{{cookiecutter.project_slug}}/static", "{{cookiecutter.project_slug}}/frontend", "{{cookiecutter.project_slug}}/templates")
 
     if "{{ cookiecutter.mail_service }}" == "Amazon SES":
-        remove_files_and_folders("app/services/email/smtp.py")
+        remove_files_and_folders("{{cookiecutter.project_slug}}/services/email/smtp.py")
 
     if "{{ cookiecutter.mail_service }}" == "Other SMTP":
-        remove_files_and_folders("app/services/email/ses.py")
+        remove_files_and_folders("{{cookiecutter.project_slug}}/services/email/ses.py")
 
     if "{{ cookiecutter.use_heroku }}" == "n":
         remove_files_and_folders("runtime.txt", "Procfile")
@@ -33,7 +33,7 @@ def main():
         remove_files_and_folders("Dockerfile")
 
     if "{{ cookiecutter.database }}" == "Beanie":
-        remove_files_and_folders("app/db/models.py")
+        remove_files_and_folders("{{cookiecutter.project_slug}}/db/models.py")
 
     # try to format the code
     try:

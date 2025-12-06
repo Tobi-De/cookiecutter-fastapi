@@ -7,7 +7,7 @@ from fastapi_users_tortoise import (
 )
 from tortoise import fields
 
-from app.db.models import TimeStampedModel
+from {{cookiecutter.project_slug}}.db.models import TimeStampedModel
 
 
 class User(TortoiseBaseUserAccountModelUUID, TimeStampedModel):
