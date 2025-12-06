@@ -24,7 +24,7 @@ update:
 
 # Start the development server (scripts-to-rule-them-all: server)
 server:
-    python -m {{cookiecutter.project_slug}} dev
+    python -m {{cookiecutter.project_slug}} run-server
 
 # Run all development services (server, worker, redis)
 work:
@@ -46,7 +46,7 @@ console:
 
 # Apply database migrations
 migrate:
-    aerich upgrade
+    python -m {{cookiecutter.project_slug}} migrate-db
 
 # Create a new database migration
 makemigrations NAME:
