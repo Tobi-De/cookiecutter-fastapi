@@ -108,19 +108,20 @@ jobs:
         run: |
           cd test_project
           uv sync
-        continue-on-error: true # Don't fail if dependencies can't be installed (e.g., due to external service requirements)
 
-      - name: Run basic Python import test
+      - name: Create minimal .env file
         run: |
           cd test_project
-          python -c "
-          import sys
-          sys.path.insert(0, '.')
-          try:
-              import test_project
-              import test_project.main
-              print('Import test passed')
-          except ImportError as e:
-              print(f'Import test failed (may require full dependencies): {e}')
-          "
-        continue-on-error: true
+          cat > .env << EOF
+          SECRET_KEY=test-secret-key-for-ci-only-do-not-use-in-production
+          REDIS_URL=redis://localhost:6379/0
+          DATABASE_URI=postgresql://postgres:postgres@localhost:5432/test_db
+          DEFAULT_FROM_EMAIL=noreply@example.com
+          FIRST_SUPERUSER_EMAIL=admin@example.com
+          FIRST_SUPERUSER_PASSWORD=changethis123
+          EOF
+
+      - name: Run info command
+        run: |
+          cd test_project
+          uv run python -m test_project info
