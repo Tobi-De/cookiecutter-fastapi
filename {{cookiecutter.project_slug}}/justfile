@@ -1,0 +1,103 @@
+# List available commands
+default:
+    @just --list
+
+# Install dependencies (scripts-to-rule-them-all: bootstrap)
+bootstrap:
+    pip install -e ".[dev]"
+
+# Set up the application for the first time after cloning (scripts-to-rule-them-all: setup)
+setup: bootstrap
+{%- if cookiecutter.database == "Tortoise" %}
+    python -m {{cookiecutter.project_slug}} migrate-db
+{%- endif %}
+    @echo "✓ Setup complete! Don't forget to:"
+    @echo "  1. Copy .env.template to .env and configure it"
+    @echo "  2. Create your database: createdb {{cookiecutter.project_slug}}"
+{%- if cookiecutter.database == "Tortoise" %}
+    @echo "  3. Run 'just migrate' to apply database migrations"
+{%- endif %}
+
+# Update dependencies to the latest versions (scripts-to-rule-them-all: update)
+update:
+    pip install -e ".[dev]" --upgrade
+
+# Start the development server (scripts-to-rule-them-all: server)
+server:
+    python -m {{cookiecutter.project_slug}} run-server
+
+# Run all development services (server, worker, redis)
+work:
+    python -m {{cookiecutter.project_slug}} work
+
+# Run tests (scripts-to-rule-them-all: test)
+test *ARGS:
+    pytest {{cookiecutter.project_slug}}/ {{ "{{ARGS}}" }}
+
+# Open an interactive console (scripts-to-rule-them-all: console)
+console:
+{%- if cookiecutter.database == "Tortoise" %}
+    python -m {{cookiecutter.project_slug}} shell
+{%- else %}
+    ipython
+{%- endif %}
+
+{%- if cookiecutter.database == "Tortoise" %}
+
+# Apply database migrations
+migrate:
+    python -m {{cookiecutter.project_slug}} migrate-db
+
+# Create a new database migration
+makemigrations NAME:
+    aerich migrate --name {{ "{{NAME}}" }}
+
+# Initialize the database
+init-db:
+    aerich init-db
+{%- endif %}
+
+# Create a new user interactively
+create-user:
+    python -m {{cookiecutter.project_slug}} create-user
+
+# Generate a secure secret key
+secret-key:
+    python -m {{cookiecutter.project_slug}} secret-key
+
+# Show project health and settings information
+info:
+    python -m {{cookiecutter.project_slug}} info
+
+# Create a new FastAPI app/component
+start-app NAME:
+    python -m {{cookiecutter.project_slug}} start-app {{ "{{NAME}}" }}
+
+# Run the SAQ worker
+worker:
+    python -m {{cookiecutter.project_slug}} run-worker
+
+# Run a test mail server for development
+mailserver:
+    python -m {{cookiecutter.project_slug}} run-mailserver
+
+# Run the production server with gunicorn
+prod-server:
+    python -m {{cookiecutter.project_slug}} run-prod-server
+
+# Run linting and formatting checks
+lint:
+    pre-commit run --all-files
+
+# Format code with black and isort
+format:
+    black .
+    isort .
+
+# Clean up temporary files and caches
+clean:
+    find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+    find . -type f -name "*.pyc" -delete
+    find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+    find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
+    find . -type d -name ".mypy_cache" -exec rm -rf {} + 2>/dev/null || true

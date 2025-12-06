@@ -75,3 +75,47 @@ def test_project_generation(cookies, context, context_override):
     paths = build_files_list(result.project_path)
     assert paths
     check_paths(paths)
+
+
+def test_justfile_is_generated(cookies, context):
+    """Test that justfile is generated in the project."""
+    result = cookies.bake(extra_context=context)
+    assert result.exit_code == 0
+    
+    justfile_path = result.project_path / "justfile"
+    assert justfile_path.exists(), "justfile should be generated"
+    
+    # Verify it contains the scripts-to-rule-them-all commands
+    content = justfile_path.read_text()
+    assert "bootstrap" in content
+    assert "setup" in content
+    assert "update" in content
+    assert "server" in content
+    assert "test" in content
+    assert "console" in content
+
+
+def test_justfile_tortoise_commands(cookies, context):
+    """Test that justfile contains Tortoise-specific commands when database is Tortoise."""
+    result = cookies.bake(extra_context={**context, "database": "Tortoise"})
+    assert result.exit_code == 0
+    
+    justfile_path = result.project_path / "justfile"
+    content = justfile_path.read_text()
+    
+    assert "migrate" in content
+    assert "makemigrations" in content
+    assert "aerich" in content
+
+
+def test_justfile_beanie_no_migrations(cookies, context):
+    """Test that justfile doesn't contain migration commands when database is Beanie."""
+    result = cookies.bake(extra_context={**context, "database": "Beanie"})
+    assert result.exit_code == 0
+    
+    justfile_path = result.project_path / "justfile"
+    content = justfile_path.read_text()
+    
+    # Beanie projects shouldn't have these commands
+    assert "aerich" not in content
+    assert "makemigrations" not in content
