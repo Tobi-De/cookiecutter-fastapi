@@ -8,6 +8,51 @@
 - `Python 3.9+`
 - `uv`
 - `Postgresql 10+`
+- `just` (optional, for using the justfile commands)
+
+
+## Quick Start
+
+This project includes a justfile with common commands following the [scripts-to-rule-them-all](https://github.com/github/scripts-to-rule-them-all) pattern.
+
+To see all available commands:
+
+```shell
+just --list
+```
+
+### First-time setup
+
+```shell
+# Install dependencies and set up the project
+just setup
+```
+
+### Running the development server
+
+```shell
+# Start the development server
+just server
+
+# Or run all services (server, worker, redis) together
+just work
+```
+
+### Other common commands
+
+```shell
+# Run tests
+just test
+
+# Open an interactive console
+just console
+
+# Create a new user
+just create-user
+
+# See project information
+just info
+```
 
 
 ## Development
