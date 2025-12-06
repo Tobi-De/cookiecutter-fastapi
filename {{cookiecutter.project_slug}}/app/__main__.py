@@ -43,6 +43,8 @@ try:
     from fastapi_cli.cli import app as fastapi_cli_app
     
     # Add FastAPI CLI commands (dev and run) to our CLI
+    # Note: We directly append to registered_commands as this is the standard
+    # way to programmatically add commands to a Typer app in this context
     for cmd_info in fastapi_cli_app.registered_commands:
         cli.registered_commands.append(cmd_info)
 except ImportError:
@@ -114,13 +116,13 @@ def work(mailserver: bool = typer.Option(False)):
     }
     manager.add_process("redis", "redis-server")
     {% if cookiecutter.database == "Tortoise" -%}
-    manager.add_process("server", "aerich upgrade && python -m app dev", env=project_env)
+    manager.add_process("server", f"aerich upgrade && {sys.executable} -m app dev", env=project_env)
     {% else %}
-    manager.add_process("server", "python -m app dev", env=project_env)
+    manager.add_process("server", f"{sys.executable} -m app dev", env=project_env)
     {% endif -%}
-    manager.add_process("worker", "python -m app run-worker", env=project_env)
+    manager.add_process("worker", f"{sys.executable} -m app run-worker", env=project_env)
     if mailserver:
-        manager.add_process("mailserver", "python -m app run-mailserver")
+        manager.add_process("mailserver", f"{sys.executable} -m app run-mailserver")
 
     manager.loop()
     sys.exit(manager.returncode)
