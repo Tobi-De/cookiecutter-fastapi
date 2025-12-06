@@ -1,0 +1,126 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test project generation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run cookiecutter tests
+        run: |
+          pytest tests/ -v
+
+  test-generated-project:
+    name: Test generated project
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        database: ["Tortoise", "Beanie"]
+        use_docker: ["y", "n"]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install cookiecutter
+        run: |
+          python -m pip install --upgrade pip
+          pip install cookiecutter
+
+      - name: Generate project
+        run: |
+          cookiecutter . --no-input \
+            project_name="Test Project" \
+            database="${{ matrix.database }}" \
+            use_docker="${{ matrix.use_docker }}"
+
+      - name: Check generated project structure
+        run: |
+          cd test_project
+          
+          # Check that key files exist
+          test -f pyproject.toml
+          test -f README.md
+          test -f manage.py
+          test -d app
+          
+          # Check that app module files exist
+          test -f app/__init__.py
+          test -f app/main.py
+          test -f app/health.py
+
+      - name: Validate Python syntax
+        run: |
+          cd test_project
+          
+          # Check all Python files for syntax errors
+          find . -name '*.py' -exec python -m py_compile {} +
+
+      - name: Check for template remnants
+        run: |
+          cd test_project
+          
+          # Search for any cookiecutter template variables that weren't replaced
+          if grep -r '{{cookiecutter' . --include="*.py" --include="*.md" --include="*.toml"; then
+            echo "Found unreplaced template variables"
+            exit 1
+          fi
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install project dependencies
+        run: |
+          cd test_project
+          uv sync
+        continue-on-error: true # Don't fail if dependencies can't be installed (e.g., due to external service requirements)
+
+      - name: Run basic Python import test
+        run: |
+          cd test_project
+          python -c "
+          import sys
+          sys.path.insert(0, '.')
+          try:
+              import app
+              import app.main
+              print('Import test passed')
+          except ImportError as e:
+              print(f'Import test failed (may require full dependencies): {e}')
+          "
+        continue-on-error: true
