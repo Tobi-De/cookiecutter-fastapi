@@ -37,36 +37,32 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.7+ and the following tools:
+You need Python 3.9+ and the following tools:
 
-- [Poetry]
-- [Nox]
-- [nox-poetry]
+- [uv]
 
 Install the package with development requirements:
 
 ```console
-$ poetry install
+$ uv sync
 ```
 
 You can now run an interactive Python session,
 or the command-line interface:
 
 ```console
-$ poetry run python
-$ poetry run cookiecutter-fastapi
+$ uv run python
+$ uv run cookiecutter-fastapi
 ```
 
-[poetry]: https://python-poetry.org/
-[nox]: https://nox.thea.codes/
-[nox-poetry]: https://nox-poetry.readthedocs.io/
+[uv]: https://docs.astral.sh/uv/
 
 ## How to test the project
 
 Run the full test suite:
 
 ```console
-$ pytest
+$ uv run pytest
 ```
 
 Unit tests are located in the _tests_ directory,
@@ -80,7 +76,7 @@ Open a [pull request] to submit changes to this project.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
-- The Nox test suite must pass without errors and warnings.
+- The test suite must pass without errors and warnings.
 - Include unit tests. This project maintains 100% code coverage.
 - If your changes add functionality, update the documentation accordingly.
 
