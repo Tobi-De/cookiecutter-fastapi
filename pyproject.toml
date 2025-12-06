@@ -49,8 +49,8 @@ Repository = "https://github.com/Tobi-De/cookiecutter-fastapi"
 norecursedirs = ["app*"]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
-[tool.hatch.build.targets.wheel]
-packages = ["tests"]
+[tool.setuptools]
+py-modules = []
