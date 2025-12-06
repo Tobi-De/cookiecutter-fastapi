@@ -51,17 +51,73 @@ aerich upgrade
 
 ### Run the fastapi app
 
+Using the new FastAPI CLI (recommended):
+
+```shell
+# Run in development mode with auto-reload
+python -m app dev
+
+# Or using the shorthand
+fastapi dev
+
+# Run all services (server, worker, redis) together
+python -m app work
+```
+
+Using the traditional method (still supported):
+
 ```shell
 python manage.py work
 ```
 
-### Cli
+### CLI Commands
 
-There is a manage.py file at the root of the project, it contains a basic cli to hopefully
-help you manage your project more easily. To get all available commands type this:
+The project includes a comprehensive CLI built with Typer, now integrated with the official FastAPI CLI. 
+The CLI is available through both the new `python -m app` interface and the legacy `python manage.py` interface.
+
+**Available via FastAPI CLI integration:**
+- `dev` - Run the development server with auto-reload (powered by FastAPI CLI)
+- `run` - Run the production server (powered by FastAPI CLI)
+
+**Custom project commands:**
+- `work` - Run all development services (server, worker, redis) in one command
+- `run-server` - Run the development server (uvicorn)
+- `run-prod-server` - Run the production server (gunicorn)
+- `create-user` - Interactively create a new user
+- `start-app` - Create a new FastAPI component (similar to Django's startapp)
+{% if cookiecutter.database == "Tortoise" -%}
+- `migrate-db` - Apply database migrations
+- `shell` - Open an interactive IPython shell with auto-imports
+{% endif -%}
+- `run-worker` - Run the SAQ worker process
+- `run-mailserver` - Run a test SMTP server for development
+- `secret-key` - Generate a secure secret key
+- `info` - Show project health and settings
+
+To see all available commands:
 
 ```shell
+# New way (recommended)
+python -m app --help
+
+# Legacy way (still works)
 python manage.py --help
+```
+
+Example usage:
+
+```shell
+# Start development server with FastAPI CLI
+python -m app dev
+
+# Create a new user
+python -m app create-user
+
+# Generate a secret key
+python -m app secret-key
+
+# Run all services together
+python -m app work
 ```
 
 ## Credits
