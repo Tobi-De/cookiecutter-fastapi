@@ -14,9 +14,9 @@ from pydantic import (
     AnyUrl,
     {% endif -%}
     RedisDsn,
+    ValidationInfo,
     field_validator,
 )
-from pydantic_core import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 try:
