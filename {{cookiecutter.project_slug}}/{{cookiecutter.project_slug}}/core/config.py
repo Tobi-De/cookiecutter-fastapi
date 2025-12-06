@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: Environment = "dev"
     SECRET_KEY: str
     DEBUG: bool = False
-    AUTH_TOKEN_LIFETIME_SECONDS = 3600
+    AUTH_TOKEN_LIFETIME_SECONDS: int = 3600
     SERVER_HOST: AnyHttpUrl = "http://localhost:8000"  # type:ignore
     {% if cookiecutter.use_sentry == 'y' -%}
     SENTRY_DSN: HttpUrl | None = None
