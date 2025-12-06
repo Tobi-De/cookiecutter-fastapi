@@ -173,7 +173,7 @@ def shell():
         from traitlets.config import Config
     except ImportError:
         typer.secho(
-            "Install iPython using `poetry add ipython` to use this feature.",
+            "Install iPython using `uv add --dev ipython` to use this feature.",
             fg=typer.colors.RED,
         )
         raise typer.Exit()

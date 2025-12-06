@@ -6,7 +6,7 @@
 ## Prerequisites
 
 - `Python 3.9+`
-- `Poetry 1.2+`
+- `uv`
 - `Postgresql 10+`
 
 
