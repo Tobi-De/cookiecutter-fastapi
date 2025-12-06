@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
 readme = "README.md"
 authors = [
-    { name = "{{cookiecutter.author.split('<')[0].strip()}}", email = "{{cookiecutter.author.split('<')[1].split('>')[0].strip() if '<' in cookiecutter.author else ''}}" }
+    {% if '<' in cookiecutter.author -%}
+    { name = "{{cookiecutter.author.split('<')[0].strip()}}", email = "{{cookiecutter.author.split('<')[1].split('>')[0].strip()}}" }
+    {%- else -%}
+    { name = "{{cookiecutter.author}}" }
+    {%- endif %}
 ]
 license = { text = "{{cookiecutter.license}}" }
 requires-python = ">=3.9"
