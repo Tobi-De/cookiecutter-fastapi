@@ -14,6 +14,7 @@ license = { text = "{{cookiecutter.license}}" }
 requires-python = ">=3.9"
 dependencies = [
     "fastapi>=0.109.2",
+    "fastapi-cli>=0.0.2",
     "uvicorn>=0.21.1",
     "pydantic[email,dotenv]>=1.10.6",
     {% if cookiecutter.database == "Tortoise" -%}
