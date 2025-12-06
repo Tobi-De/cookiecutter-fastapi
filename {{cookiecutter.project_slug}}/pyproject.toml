@@ -1,51 +1,57 @@
-[tool.poetry]
+[project]
 name = "{{cookiecutter.project_name}}"
 version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
-authors = ["{{cookiecutter.author}}"]
-license = "{{cookiecutter.license}}"
+readme = "README.md"
+authors = [
+    { name = "{{cookiecutter.author.split('<')[0].strip()}}", email = "{{cookiecutter.author.split('<')[1].split('>')[0].strip() if '<' in cookiecutter.author else ''}}" }
+]
+license = { text = "{{cookiecutter.license}}" }
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.109.2",
+    "uvicorn>=0.21.1",
+    "pydantic[email,dotenv]>=1.10.6",
+    {% if cookiecutter.database == "Tortoise" -%}
+    "fastapi-users>=10.4.1",
+    "fastapi-users-tortoise>=0.2.0",
+    "tortoise-orm[asyncpg]>=0.19.3",
+    "aerich>=0.7.1",
+    {% endif -%}
+    {% if cookiecutter.database == "Beanie" -%}
+    "fastapi-users[beanie]>=10.4.1",
+    {% endif -%}
+    "saq[hiredis,web]>=0.9.3",
+    "hupper>=1.11",
+    {% if cookiecutter.mail_service == 'Other SMTP' -%}
+    "aiosmtplib>=1.1.6",
+    {% endif -%}
+    "python-multipart>=0.0.9",
+    {% if cookiecutter.use_sentry == 'y' -%}
+    "sentry-sdk>=1.17.0",
+    {% endif -%}
+    "rich>=13.3.2",
+    "typer>=0.7.0",
+    "watchgod>=0.8.2",
+    "Jinja2>=3.1.2",
+    "httpx>=0.23.3",
+    {% if cookiecutter.mail_service == 'Amazon SES' -%}
+    "aioaws>=0.14",
+    {% endif -%}
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-fastapi = "^0.109.2"
-uvicorn = "^0.21.1"
-pydantic = {extras = ["email", "dotenv"], version = "^1.10.6"}
-{% if cookiecutter.database == "Tortoise" -%}
-fastapi-users = "^10.4.1"
-fastapi-users-tortoise = "^0.2.0"
-tortoise-orm = {extras = ["asyncpg"], version = "^0.19.3"}
-aerich = "^0.7.1"
-{% endif -%}
-{% if cookiecutter.database == "Beanie" -%}
-fastapi-users = {extras = ["beanie"], version = "^10.4.1"}
-{% endif -%}
-saq = {extras = ["hiredis", "web"], version = "^0.9.3"}
-hupper = "^1.11"
-{% if cookiecutter.mail_service == 'Other SMTP' -%}
-aiosmtplib = "^1.1.6"
-{% endif -%}
-python-multipart = "^0.0.9"
-{% if cookiecutter.use_sentry == 'y' -%}
-sentry-sdk = "^1.17.0"
-{% endif -%}
-rich = "^13.3.2"
-typer = "^0.7.0"
-watchgod = "^0.8.2"
-Jinja2 = "^3.1.2"
-httpx = "^0.23.3"
-{% if cookiecutter.mail_service == 'Amazon SES' -%}
-aioaws = "^0.14"
-{% endif %}
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.2.2"
-factory-boy = "^3.2.1"
-pre-commit = "^3.1.1"
-mypy = "^1.1.1"
-isort = "^5.12.0"
-flake8 = "^6.0.0"
-ipython = "^8.11.0"
-aiosmtpd = "^1.4.4.post2"
-honcho = "^1.1.0"
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.2.2",
+    "factory-boy>=3.2.1",
+    "pre-commit>=3.1.1",
+    "mypy>=1.1.1",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "ipython>=8.11.0",
+    "aiosmtpd>=1.4.4.post2",
+    "honcho>=1.1.0",
+]
 
 {% if cookiecutter.database == "Tortoise" -%}
 [tool.aerich]
@@ -79,5 +85,5 @@ select = [
 ]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.13,<0.10.0"]
+build-backend = "uv_build"
