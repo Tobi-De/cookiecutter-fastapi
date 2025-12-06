@@ -99,15 +99,15 @@ jobs:
             exit 1
           fi
 
-      - name: Install Poetry
+      - name: Install uv
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       - name: Install project dependencies
         run: |
           cd test_project
-          poetry install --no-interaction
+          uv sync
         continue-on-error: true # Don't fail if dependencies can't be installed (e.g., due to external service requirements)
 
       - name: Run basic Python import test
