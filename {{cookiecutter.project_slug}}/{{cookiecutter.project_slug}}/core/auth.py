@@ -14,9 +14,9 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 
-from app.users.manager import get_user_manager
-from app.users.models import User
-from app.users.schemas import UserCreate, UserRead
+from {{cookiecutter.project_slug}}.users.manager import get_user_manager
+from {{cookiecutter.project_slug}}.users.models import User
+from {{cookiecutter.project_slug}}.users.schemas import UserCreate, UserRead
 from .config import settings
 
 bearer_transport = BearerTransport(tokenUrl=settings.PATHS.LOGIN_PATH)

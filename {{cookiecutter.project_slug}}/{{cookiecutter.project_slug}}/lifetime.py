@@ -1,4 +1,4 @@
-from app.initial_data import create_superuser
+from {{cookiecutter.project_slug}}.initial_data import create_superuser
 {% if cookiecutter.database == "Beanie" -%}
 from .db.config import init_db
 {% endif %}

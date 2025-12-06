@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 from aiosmtplib import SMTP
 from aiosmtplib.errors import SMTPException
 
-from app.core.logger import logger
+from {{cookiecutter.project_slug}}.core.logger import logger
 from .errors import SendEmailError
 
 

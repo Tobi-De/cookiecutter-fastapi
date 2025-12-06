@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.background import BackgroundTask
 
-from app.core.config import settings
+from {{cookiecutter.project_slug}}.core.config import settings
 
 
 def render_html(

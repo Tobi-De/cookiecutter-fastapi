@@ -1,7 +1,7 @@
 from fastapi_users.exceptions import UserAlreadyExists
 
 from .core.config import settings
-from app.core.logger import logger
+from {{cookiecutter.project_slug}}.core.logger import logger
 from .users.schemas import UserCreate
 from .users.utils import create_user
 
