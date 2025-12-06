@@ -260,7 +260,7 @@ def secret_key():
 @cli.command()
 def info():
     """Show project health and settings."""
-    with httpx.Client(base_url=settings.SERVER_HOST) as client:
+    with httpx.Client(base_url=str(settings.SERVER_HOST)) as client:
         try:
             resp = client.get("/health", follow_redirects=True)
         except httpx.ConnectError:
