@@ -94,7 +94,7 @@ jobs:
           cd test_project
           
           # Search for any cookiecutter template variables that weren't replaced
-          if grep -r "{{cookiecutter" . --include="*.py" --include="*.md" --include="*.toml"; then
+          if grep -r '{{cookiecutter' . --include="*.py" --include="*.md" --include="*.toml"; then
             echo "Found unreplaced template variables"
             exit 1
           fi
@@ -113,5 +113,14 @@ jobs:
       - name: Run basic Python import test
         run: |
           cd test_project
-          python -c "import sys; sys.path.insert(0, '.'); import app; import app.main" || echo "Import test failed (may require full dependencies)"
+          python -c "
+          import sys
+          sys.path.insert(0, '.')
+          try:
+              import app
+              import app.main
+              print('Import test passed')
+          except ImportError as e:
+              print(f'Import test failed (may require full dependencies): {e}')
+          "
         continue-on-error: true
