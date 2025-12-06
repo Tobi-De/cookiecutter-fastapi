@@ -85,7 +85,7 @@ def test_justfile_is_generated(cookies, context):
     justfile_path = result.project_path / "justfile"
     assert justfile_path.exists(), "justfile should be generated"
     
-    # Verify it contains the scripts-to-rule-them-all commands
+    # Verify it contains expected commands with uv
     content = justfile_path.read_text()
     assert "bootstrap" in content
     assert "setup" in content
@@ -93,6 +93,17 @@ def test_justfile_is_generated(cookies, context):
     assert "server" in content
     assert "test" in content
     assert "console" in content
+    
+    # Verify it uses uv instead of pip/python directly
+    assert "uv sync" in content
+    assert "uv run" in content
+    assert "pip install" not in content
+    
+    # Verify it uses grouping
+    assert "[group(" in content
+    assert "[group('setup')]" in content
+    assert "[group('dev')]" in content
+    assert "[group('utils')]" in content
 
 
 def test_justfile_tortoise_commands(cookies, context):
@@ -106,6 +117,10 @@ def test_justfile_tortoise_commands(cookies, context):
     assert "migrate" in content
     assert "makemigrations" in content
     assert "aerich" in content
+    
+    # Verify database commands use uv run
+    assert "uv run aerich" in content
+    assert "[group('database')]" in content
 
 
 def test_justfile_beanie_no_migrations(cookies, context):
