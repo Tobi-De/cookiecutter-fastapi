@@ -42,6 +42,6 @@ async def check_health(response: Response):
         health.saq_worker_is_online = False
         logger.error("SAQ worker is not online")
 
-    if not all(health.dict().values()):
+    if not all(health.model_dump().values()):
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return health

@@ -1,5 +1,5 @@
 from saq import Queue
-from pydantic.utils import import_string
+from importlib import import_module
 {% if cookiecutter.database == "Tortoise" -%}
 from tortoise import Tortoise
 {% endif %}
@@ -16,6 +16,26 @@ BACKGROUND_FUNCTIONS = [
     "app.users.tasks.log_user_email",
     "app.services.email.send_email_task",
 ]
+
+
+def import_string(dotted_path: str):
+    """
+    Import a module, or resolve an attribute of a module.
+    """
+    try:
+        module_path, class_name = dotted_path.rsplit(".", 1)
+    except ValueError as err:
+        raise ImportError(f"{dotted_path} doesn't look like a module path") from err
+
+    module = import_module(module_path)
+    try:
+        return getattr(module, class_name)
+    except AttributeError as err:
+        raise ImportError(
+            f"Module '{module_path}' does not have attribute '{class_name}'"
+        ) from err
+
+
 FUNCTIONS = [import_string(bg_func) for bg_func in BACKGROUND_FUNCTIONS]
 
 

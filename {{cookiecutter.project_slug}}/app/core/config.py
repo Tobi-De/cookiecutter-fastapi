@@ -5,7 +5,6 @@ from typing import Any
 
 from pydantic import (
     AnyHttpUrl,
-    BaseSettings,
     EmailStr,
     HttpUrl,
     {% if cookiecutter.database == "Tortoise" -%}
@@ -15,8 +14,10 @@ from pydantic import (
     AnyUrl,
     {% endif -%}
     RedisDsn,
-    validator,
+    field_validator,
 )
+from pydantic_core import ValidationInfo
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 try:
     from enum import StrEnum
@@ -44,6 +45,8 @@ class Paths:
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
+
     @property
     def PATHS(self) -> Paths:
         return Paths()
@@ -62,7 +65,8 @@ class Settings(BaseSettings):
 
     BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
 
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
     def assemble_cors_origins(cls, v: str | list[str]) -> list[str] | str:
         if isinstance(v, str) and not v.startswith("["):
             return [i.strip() for i in v.split(",")]
@@ -92,19 +96,17 @@ class Settings(BaseSettings):
     DEFAULT_FROM_NAME: str | None = None
     EMAILS_ENABLED: bool = False
 
-    @validator("EMAILS_ENABLED", pre=True)
-    def get_emails_enabled(cls, _: bool, values: dict[str, Any]) -> bool:
+    @field_validator("EMAILS_ENABLED", mode="before")
+    @classmethod
+    def get_emails_enabled(cls, _: bool, info: ValidationInfo) -> bool:
         return bool(
-            values.get("SMTP_HOST")
-            and values.get("SMTP_PORT")
-            and values.get("DEFAULT_FROM_EMAIL")
+            info.data.get("SMTP_HOST")
+            and info.data.get("SMTP_PORT")
+            and info.data.get("DEFAULT_FROM_EMAIL")
         )
 
     FIRST_SUPERUSER_EMAIL: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
-
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()
