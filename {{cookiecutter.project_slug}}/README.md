@@ -13,7 +13,7 @@
 
 ## Quick Start
 
-This project includes a justfile with common commands following the [scripts-to-rule-them-all](https://github.com/github/scripts-to-rule-them-all) pattern.
+This project includes a justfile with common commands for development.
 
 To see all available commands:
 

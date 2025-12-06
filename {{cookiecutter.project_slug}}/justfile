@@ -2,14 +2,16 @@
 default:
     @just --list
 
-# Install dependencies (scripts-to-rule-them-all: bootstrap)
+# Install dependencies
+[group('setup')]
 bootstrap:
-    pip install -e ".[dev]"
+    uv sync
 
-# Set up the application for the first time after cloning (scripts-to-rule-them-all: setup)
+# Set up the application for the first time after cloning
+[group('setup')]
 setup: bootstrap
 {%- if cookiecutter.database == "Tortoise" %}
-    python -m {{cookiecutter.project_slug}} migrate-db
+    uv run python -m {{cookiecutter.project_slug}} migrate-db
 {%- endif %}
     @echo "✓ Setup complete! Don't forget to:"
     @echo "  1. Copy .env.template to .env and configure it"
@@ -18,83 +20,101 @@ setup: bootstrap
     @echo "  3. Run 'just migrate' to apply database migrations"
 {%- endif %}
 
-# Update dependencies to the latest versions (scripts-to-rule-them-all: update)
+# Update dependencies to the latest versions
+[group('setup')]
 update:
-    pip install -e ".[dev]" --upgrade
+    uv sync --upgrade
 
-# Start the development server (scripts-to-rule-them-all: server)
+# Start the development server
+[group('dev')]
 server:
-    python -m {{cookiecutter.project_slug}} run-server
+    uv run python -m {{cookiecutter.project_slug}} run-server
 
 # Run all development services (server, worker, redis)
+[group('dev')]
 work:
-    python -m {{cookiecutter.project_slug}} work
+    uv run python -m {{cookiecutter.project_slug}} work
 
-# Run tests (scripts-to-rule-them-all: test)
+# Run tests
+[group('dev')]
 test *ARGS:
-    pytest {{cookiecutter.project_slug}}/ {{ "{{ARGS}}" }}
+    uv run pytest {{cookiecutter.project_slug}}/ {{ "{{ARGS}}" }}
 
-# Open an interactive console (scripts-to-rule-them-all: console)
+# Open an interactive console
+[group('dev')]
 console:
 {%- if cookiecutter.database == "Tortoise" %}
-    python -m {{cookiecutter.project_slug}} shell
+    uv run python -m {{cookiecutter.project_slug}} shell
 {%- else %}
-    ipython
+    uv run ipython
 {%- endif %}
 
 {%- if cookiecutter.database == "Tortoise" %}
 
 # Apply database migrations
+[group('database')]
 migrate:
-    python -m {{cookiecutter.project_slug}} migrate-db
+    uv run python -m {{cookiecutter.project_slug}} migrate-db
 
 # Create a new database migration
+[group('database')]
 makemigrations NAME:
-    aerich migrate --name {{ "{{NAME}}" }}
+    uv run aerich migrate --name {{ "{{NAME}}" }}
 
 # Initialize the database
+[group('database')]
 init-db:
-    aerich init-db
+    uv run aerich init-db
 {%- endif %}
 
 # Create a new user interactively
+[group('utils')]
 create-user:
-    python -m {{cookiecutter.project_slug}} create-user
+    uv run python -m {{cookiecutter.project_slug}} create-user
 
 # Generate a secure secret key
+[group('utils')]
 secret-key:
-    python -m {{cookiecutter.project_slug}} secret-key
+    uv run python -m {{cookiecutter.project_slug}} secret-key
 
 # Show project health and settings information
+[group('utils')]
 info:
-    python -m {{cookiecutter.project_slug}} info
+    uv run python -m {{cookiecutter.project_slug}} info
 
 # Create a new FastAPI app/component
+[group('utils')]
 start-app NAME:
-    python -m {{cookiecutter.project_slug}} start-app {{ "{{NAME}}" }}
+    uv run python -m {{cookiecutter.project_slug}} start-app {{ "{{NAME}}" }}
 
 # Run the SAQ worker
+[group('services')]
 worker:
-    python -m {{cookiecutter.project_slug}} run-worker
+    uv run python -m {{cookiecutter.project_slug}} run-worker
 
 # Run a test mail server for development
+[group('services')]
 mailserver:
-    python -m {{cookiecutter.project_slug}} run-mailserver
+    uv run python -m {{cookiecutter.project_slug}} run-mailserver
 
 # Run the production server with gunicorn
+[group('services')]
 prod-server:
-    python -m {{cookiecutter.project_slug}} run-prod-server
+    uv run python -m {{cookiecutter.project_slug}} run-prod-server
 
 # Run linting and formatting checks
+[group('quality')]
 lint:
-    pre-commit run --all-files
+    uv run pre-commit run --all-files
 
 # Format code with black and isort
+[group('quality')]
 format:
-    black .
-    isort .
+    uv run black .
+    uv run isort .
 
 # Clean up temporary files and caches
+[group('maintenance')]
 clean:
     find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
     find . -type f -name "*.pyc" -delete
