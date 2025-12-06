@@ -75,12 +75,12 @@ jobs:
           test -f pyproject.toml
           test -f README.md
           test -f manage.py
-          test -d app
+          test -d test_project
           
-          # Check that app module files exist
-          test -f app/__init__.py
-          test -f app/main.py
-          test -f app/health.py
+          # Check that package module files exist
+          test -f test_project/__init__.py
+          test -f test_project/main.py
+          test -f test_project/health.py
 
       - name: Validate Python syntax
         run: |
@@ -117,8 +117,8 @@ jobs:
           import sys
           sys.path.insert(0, '.')
           try:
-              import app
-              import app.main
+              import test_project
+              import test_project.main
               print('Import test passed')
           except ImportError as e:
               print(f'Import test failed (may require full dependencies): {e}')
