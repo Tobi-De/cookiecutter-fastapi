@@ -87,16 +87,17 @@ jobs:
           cd test_project
           
           # Check all Python files for syntax errors
-          python -m py_compile app/*.py
-          python -m py_compile app/*/*.py 2>/dev/null || true
-          python -m py_compile manage.py
+          find . -name '*.py' -exec python -m py_compile {} +
 
       - name: Check for template remnants
         run: |
           cd test_project
           
           # Search for any cookiecutter template variables that weren't replaced
-          ! grep -r "{{cookiecutter" . --include="*.py" --include="*.md" --include="*.toml" || (echo "Found unreplaced template variables" && exit 1)
+          if grep -r "{{cookiecutter" . --include="*.py" --include="*.md" --include="*.toml"; then
+            echo "Found unreplaced template variables"
+            exit 1
+          fi
 
       - name: Install Poetry
         run: |
