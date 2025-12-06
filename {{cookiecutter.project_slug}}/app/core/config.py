@@ -67,12 +67,12 @@ class Settings(BaseSettings):
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod
-    def assemble_cors_origins(cls, v: str | list[str]) -> list[str] | str:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+    def assemble_cors_origins(cls, value: str | list[str]) -> list[str] | str:
+        if isinstance(value, str) and not value.startswith("["):
+            return [i.strip() for i in value.split(",")]
+        elif isinstance(value, (list, str)):
+            return value
+        raise ValueError(value)
 
     {% if cookiecutter.database == "Beanie" -%}
     DATABASE_URI: AnyUrl
@@ -98,7 +98,7 @@ class Settings(BaseSettings):
 
     @field_validator("EMAILS_ENABLED", mode="before")
     @classmethod
-    def get_emails_enabled(cls, _: bool, info: ValidationInfo) -> bool:
+    def get_emails_enabled(cls, value: bool, info: ValidationInfo) -> bool:
         return bool(
             info.data.get("SMTP_HOST")
             and info.data.get("SMTP_PORT")
