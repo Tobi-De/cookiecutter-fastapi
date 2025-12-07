@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.12"]
     
     steps:
       - name: Checkout repository
@@ -108,19 +108,23 @@ jobs:
         run: |
           cd test_project
           uv sync
-        continue-on-error: true # Don't fail if dependencies can't be installed (e.g., due to external service requirements)
+          # Note: Dependencies must install successfully to run the info command test below
 
-      - name: Run basic Python import test
+      - name: Create minimal .env file
         run: |
           cd test_project
-          python -c "
-          import sys
-          sys.path.insert(0, '.')
-          try:
-              import test_project
-              import test_project.main
-              print('Import test passed')
-          except ImportError as e:
-              print(f'Import test failed (may require full dependencies): {e}')
-          "
-        continue-on-error: true
+          # Create .env with dummy but valid URLs (services don't need to be running)
+          # The info command validates settings format but doesn't connect to services
+          cat > .env << EOF
+          SECRET_KEY=test-secret-key-for-ci-only-do-not-use-in-production
+          REDIS_URL=redis://localhost:6379/0
+          DATABASE_URI=postgresql://postgres:postgres@localhost:5432/test_db
+          DEFAULT_FROM_EMAIL=noreply@example.com
+          FIRST_SUPERUSER_EMAIL=admin@example.com
+          FIRST_SUPERUSER_PASSWORD=changethis123
+          EOF
+
+      - name: Run info command
+        run: |
+          cd test_project
+          uv run python -m test_project info

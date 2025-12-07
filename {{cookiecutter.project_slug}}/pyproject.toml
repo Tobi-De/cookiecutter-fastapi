@@ -1,5 +1,5 @@
 [project]
-name = "{{cookiecutter.project_name}}"
+name = "{{cookiecutter.project_slug}}"
 version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
 readme = "README.md"
@@ -27,6 +27,7 @@ dependencies = [
     {% endif -%}
     {% if cookiecutter.database == "Beanie" -%}
     "fastapi-users[beanie]>=10.4.1",
+    "motor>=3.0.0",
     {% endif -%}
     "saq[hiredis,web]>=0.9.3",
     "hupper>=1.11",

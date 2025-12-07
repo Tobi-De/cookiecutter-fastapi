@@ -58,13 +58,15 @@ async def shutdown(_: dict):
     await Tortoise.close_connections()
 {% endif %}
 
-queue = Queue.from_url(settings.REDIS_URL)
+queue = Queue.from_url(str(settings.REDIS_URL))
 
 settings = {
     "queue": queue,
     "functions": FUNCTIONS,
     "concurrency": 10,
     "startup": startup,
+    {% if cookiecutter.database == "Tortoise" -%}
     "shutdown": shutdown,
+    {% endif -%}
 }
 
