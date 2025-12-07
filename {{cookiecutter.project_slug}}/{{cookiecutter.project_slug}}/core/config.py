@@ -45,7 +45,7 @@ class Paths:
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=str(Paths.ROOT_DIR / ".env"))
 
     @property
     def PATHS(self) -> Paths:
