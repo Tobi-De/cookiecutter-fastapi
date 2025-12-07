@@ -28,10 +28,11 @@ async def get_user_db():
 from __future__ import annotations
 
 from beanie import PydanticObjectId
-from fastapi_users.db import BeanieBaseUser, BeanieUserDatabase
+from fastapi_users.db import BeanieUserDatabase
+from fastapi_users_db_beanie import BeanieBaseUserDocument
 
 
-class User(BeanieBaseUser[PydanticObjectId]):
+class User(BeanieBaseUserDocument):
     short_name: str | None = None
     full_name: str | None = None
 
