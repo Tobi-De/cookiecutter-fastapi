@@ -1,18 +1,11 @@
 [project]
-name = "{{cookiecutter.project_slug}}"
-version = "0.1.0"
-description = "{{cookiecutter.project_description}}"
-readme = "README.md"
 authors = [
     {% if '<' in cookiecutter.author -%}
     { name = "{{cookiecutter.author.split('<')[0].strip()}}", email = "{{cookiecutter.author.split('<')[1].split('>')[0].strip()}}" }
     {%- else -%}
     { name = "{{cookiecutter.author}}" }
     {%- endif %}
-]
-license = { text = "{{cookiecutter.license}}" }
-requires-python = ">=3.9"
-dependencies = [
+]dependencies = [
     "fastapi>=0.109.2",
     "fastapi-cli>=0.0.2",
     "uvicorn>=0.21.1",
@@ -47,27 +40,33 @@ dependencies = [
     "aioaws>=0.14",
     {% endif -%}
     "honcho>=1.1.0",
-]
+]name = "{{cookiecutter.project_slug}}"
+version = "0.1.0"
+description = "{{cookiecutter.project_description}}"
+readme = "README.md"
+license = { text = "{{cookiecutter.license}}" }
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
+
+
+{% if cookiecutter.database == "Tortoise" -%}
 dev = [
     "pytest>=7.2.2",
     "factory-boy>=3.2.1",
     "pre-commit>=3.1.1",
     "mypy>=1.1.1",
-    "isort>=5.12.0",
-    "flake8>=6.0.0",
+    "ruff>=0.1.0",
     "ipython>=8.11.0",
     "aiosmtpd>=1.4.4.post2",
 ]
-
-{% if cookiecutter.database == "Tortoise" -%}
 [tool.aerich]
+
+{% endif -%}
+
 tortoise_orm = "{{cookiecutter.project_slug}}.db.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
-{% endif -%}
-
 [tool.isort]
 profile = "black"
 
@@ -82,14 +81,14 @@ ignore_missing_imports = true
 [tool.ruff]
 line-length = 120
 select = [
-    "E", # https://github.com/charliermarsh/ruff#pycodestylet
-    "F", # https://github.com/charliermarsh/ruff#pyflakes
+    "E",  # https://github.com/charliermarsh/ruff#pycodestylet
+    "F",  # https://github.com/charliermarsh/ruff#pyflakes
     "UP", # https://github.com/charliermarsh/ruff#pyupgrade
-    "N", # https://github.com/charliermarsh/ruff#pep8-naming
-    "S", # https://github.com/charliermarsh/ruff#flake8-bandit
-    "C", # https://github.com/charliermarsh/ruff#flake8-comprehensions
-    "B", # https://github.com/charliermarsh/ruff#flake8-bugbear
-    "T" # https://github.com/charliermarsh/ruff#flake8-print
+    "N",  # https://github.com/charliermarsh/ruff#pep8-naming
+    "S",  # https://github.com/charliermarsh/ruff#flake8-bandit
+    "C",  # https://github.com/charliermarsh/ruff#flake8-comprehensions
+    "B",  # https://github.com/charliermarsh/ruff#flake8-bugbear
+    "T",  # https://github.com/charliermarsh/ruff#flake8-print
 ]
 
 [build-system]

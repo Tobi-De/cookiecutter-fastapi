@@ -6,7 +6,7 @@ from {{cookiecutter.project_slug}}.core.config import settings
 
 
 TORTOISE_ORM = {
-    "connections": {"default": settings.DATABASE_URI},
+    "connections": {"default": str(settings.DATABASE_URI)},
     "apps": {
         "models": {
             "models": ["{{cookiecutter.project_slug}}.users.models", "aerich.models"],

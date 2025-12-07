@@ -10,11 +10,12 @@ bootstrap:
 # Set up the application for the first time after cloning
 [group('setup')]
 setup: bootstrap
+    @if [ ! -f .env ]; then cp .env.template .env; echo "Created .env from template"; fi
 {%- if cookiecutter.database == "Tortoise" %}
     uv run python -m {{cookiecutter.project_slug}} migrate-db
 {%- endif %}
     @echo "✓ Setup complete! Don't forget to:"
-    @echo "  1. Copy .env.template to .env and configure it"
+    @echo "  1. Configure your .env file"
     @echo "  2. Create your database: createdb {{cookiecutter.project_slug}}"
 {%- if cookiecutter.database == "Tortoise" %}
     @echo "  3. Run 'just migrate' to apply database migrations"
@@ -105,13 +106,13 @@ prod-server:
 # Run linting and formatting checks
 [group('quality')]
 lint:
-    uv run pre-commit run --all-files
+    uv run ruff check .
 
 # Format code with black and isort
 [group('quality')]
 format:
-    uv run black .
-    uv run isort .
+    uv run ruff format .
+    uv run ruff check --fix .
 
 # Clean up temporary files and caches
 [group('maintenance')]
