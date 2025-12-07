@@ -62,13 +62,13 @@ dev = [
     "ipython>=8.11.0",
     "aiosmtpd>=1.4.4.post2",
 ]
+
 [tool.aerich]
-
-{% endif -%}
-
 tortoise_orm = "{{cookiecutter.project_slug}}.db.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+{% endif -%}
+
 [tool.isort]
 profile = "black"
 
