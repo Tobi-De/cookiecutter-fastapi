@@ -5,7 +5,8 @@ authors = [
     {%- else -%}
     { name = "{{cookiecutter.author}}" }
     {%- endif %}
-]dependencies = [
+]
+dependencies = [
     "fastapi>=0.109.2",
     "fastapi-cli>=0.0.2",
     "uvicorn>=0.21.1",
@@ -40,7 +41,8 @@ authors = [
     "aioaws>=0.14",
     {% endif -%}
     "honcho>=1.1.0",
-]name = "{{cookiecutter.project_slug}}"
+]
+name = "{{cookiecutter.project_slug}}"
 version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
 readme = "README.md"
@@ -60,13 +62,13 @@ dev = [
     "ipython>=8.11.0",
     "aiosmtpd>=1.4.4.post2",
 ]
+
 [tool.aerich]
-
-{% endif -%}
-
 tortoise_orm = "{{cookiecutter.project_slug}}.db.config.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+{% endif -%}
+
 [tool.isort]
 profile = "black"
 

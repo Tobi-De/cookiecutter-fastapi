@@ -1,5 +1,6 @@
 import os
 import re
+import tomllib
 
 import pytest
 from binaryornot.check import is_binary
@@ -134,3 +135,30 @@ def test_justfile_beanie_no_migrations(cookies, context):
     # Beanie projects shouldn't have these commands
     assert "aerich" not in content
     assert "makemigrations" not in content
+
+
+def test_pyproject_toml_is_valid_toml(cookies, context):
+    """Test that the generated pyproject.toml is valid TOML and can be parsed."""
+    result = cookies.bake(extra_context=context)
+    assert result.exit_code == 0
+    
+    pyproject_path = result.project_path / "pyproject.toml"
+    assert pyproject_path.exists(), "pyproject.toml should be generated"
+    
+    # Verify it can be parsed as valid TOML
+    with open(pyproject_path, 'rb') as f:
+        data = tomllib.load(f)
+    
+    # Verify basic structure
+    assert "project" in data
+    assert "name" in data["project"]
+    assert "version" in data["project"]
+    assert "authors" in data["project"]
+    assert "dependencies" in data["project"]
+    
+    # Verify authors and dependencies are lists
+    assert isinstance(data["project"]["authors"], list)
+    assert isinstance(data["project"]["dependencies"], list)
+    assert len(data["project"]["authors"]) > 0
+    assert len(data["project"]["dependencies"]) > 0
+
