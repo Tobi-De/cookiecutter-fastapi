@@ -65,6 +65,8 @@ settings = {
     "functions": FUNCTIONS,
     "concurrency": 10,
     "startup": startup,
+    {% if cookiecutter.database == "Tortoise" -%}
     "shutdown": shutdown,
+    {% endif -%}
 }
 
