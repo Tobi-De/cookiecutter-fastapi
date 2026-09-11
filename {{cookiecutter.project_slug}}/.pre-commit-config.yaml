@@ -14,7 +14,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/myint/autoflake
-  rev: v2.3.1
+  rev: v2.4.0
   hooks:
     - id: autoflake
       exclude: .*/__init__.py
@@ -31,22 +31,22 @@ repos:
   - id: pyupgrade
     args: [--py37-plus]
 - repo: https://github.com/psf/black
-  rev: 26.1.0
+  rev: 26.5.1
   hooks:
   - id: black
 
 - repo: https://github.com/asottile/reorder_python_imports
-  rev: v3.16.0
+  rev: v3.17.0
   hooks:
     - id: reorder-python-imports
 
 - repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.14.14
+  rev: v0.16.7
   hooks:
     - id: ruff
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.19.1
+  rev: v2.3.1
   hooks:
   - id: mypy
     additional_dependencies:
